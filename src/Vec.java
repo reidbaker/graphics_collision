@@ -116,11 +116,10 @@ class Vec {
         // aA+bB+cC
         return A(V(a,A,b,B),V(c,C));
     }
-    /*public static Vec V(pt P, pt Q) {
-        //TODO implement point
+    public static Vec V(Pt P, Pt Q) {
         // PQ
         return new Vec(Q.x-P.x,Q.y-P.y,Q.z-P.z);
-    }*/
+    }
     public static Vec U(Vec V) {
         // V/||V||
         float n = V.norm();
@@ -138,10 +137,10 @@ class Vec {
         // UxV CROSS PRODUCT (normal to both)
         return new Vec( U.y*V.z-U.z*V.y, U.z*V.x-U.x*V.z, U.x*V.y-U.y*V.x);
     }
-    /*/public static Vec N(pt A, pt B, pt C) {
+    public static Vec N(Pt A, Pt B, Pt C) {
         // normal to triangle (A,B,C), not normalized (proportional to area)
         return N(V(A,B),V(A,C));
-    }*/
+    }
     Vec B(Vec U, Vec V) {
         // (UxV)xV unit normal to U in the plane UV
         return U(N(N(U,V),U));
