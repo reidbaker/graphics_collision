@@ -33,12 +33,32 @@ public class VecTest {
 
     @Test
     public void testSetVec() {
-        fail("Not yet implemented");
+        Vec v = new Vec(1.0f, 2.0f,3.0f);
+        Vec v2 = new Vec(2.5f, 1.5f,0.0f);
+        v.set(v2);
+        // v should be set to new values
+        assertEquals(v.x, 2.5f, EPS);
+        assertEquals(v.y, 1.5f, EPS);
+        assertEquals(v.z, 0.0f, EPS);
+        // v2 should be un modified
+        assertEquals(v2.x, 2.5f, EPS);
+        assertEquals(v2.y, 1.5f, EPS);
+        assertEquals(v2.z, 0.0f, EPS);
     }
 
     @Test
     public void testAddVec() {
-        fail("Not yet implemented");
+        Vec v = new Vec(1.0f, 2.0f,3.0f);
+        Vec v2 = new Vec(2.5f, 1.4f,0.0f);
+        v.add(v2);
+        // v is now the sum
+        assertEquals(v.x, 3.5f, EPS);
+        assertEquals(v.y, 3.4f, EPS);
+        assertEquals(v.z, 3.0f, EPS);
+        // v2 should be un modified
+        assertEquals(v2.x, 2.5f, EPS);
+        assertEquals(v2.y, 1.4f, EPS);
+        assertEquals(v2.z, 0.0f, EPS);
     }
 
     @Test
