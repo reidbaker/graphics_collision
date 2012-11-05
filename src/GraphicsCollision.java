@@ -1,37 +1,39 @@
 import processing.core.PApplet;
-import processing.core.PFont;
+import processing.core.PGraphics;
+import processing.opengl.*;                // load OpenGL libraries and utilities
+import javax.media.opengl.*;
+import javax.media.opengl.glu.*;
+import java.nio.*;
 
 public class GraphicsCollision extends PApplet {
 
-	public static void main(String[] args) {
+    private PGraphics pg;
+
+    public static void main(String[] args) {
 		PApplet.main(new String[] { "--present", "GraphicsCollision" });
 	}
 
-
-	public void setup() {
-		size(800, 600);
-		frameRate(30);
-
+    public void setup() {
+	  size(800, 600);
+	  frameRate(30);
+	  pg = createGraphics(800, 600, OPENGL);
 	}
 
 	public void draw() {
-		// Handle data drawing
-
-		background(0xd9cccc);
+	  pg.beginDraw();
+	  pg.background(102);
+	  pg.stroke(255);
+	  pg.line(40, 40, 80, 80);
+	  pg.endDraw();
 	}
+
 
 	public void mouseReleased() {
 
 	}
 
 	public void drawAxes() {
-		// Draw Axes Lines
-		stroke(0);
-		strokeWeight(3);
-		line(50,50,50,450);
-		line(50,450,750,450);
 
-		// Draw Labels
 	}
 
 	public void drawData() {
