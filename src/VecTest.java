@@ -108,7 +108,12 @@ public class VecTest {
 
     @Test
     public void testAVecVec() {
-        fail("Not yet implemented");
+        Vec v = new Vec(1.0f, 2.0f,3.0f);
+        Vec v2 = new Vec(2.5f, 1.4f,0.0f);
+        Vec out = Vec.A(v, v2);
+        assertEquals(out.x, 3.5f, EPS);
+        assertEquals(out.y, 3.4f, EPS);
+        assertEquals(out.z, 3.0f, EPS);
     }
 
     @Test
