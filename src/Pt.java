@@ -150,36 +150,96 @@ public class Pt {
         // P+sV
         return new Pt(P.x+s*V.x,P.y+s*V.y,P.z+s*V.z);
     }
+    public static Pt P(Pt O, float x, Vec I, float y, Vec J) {
+        // O+xI+yJ
+        return P(O.x+x*I.x+y*J.x,O.y+x*I.y+y*J.y,O.z+x*I.z+y*J.z);
+    }
+    public static Pt P(Pt O, float x, Vec I, float y, Vec J, float z, Vec K) {
+        // O+xI+yJ+kZ
+        return P(O.x+x*I.x+y*J.x+z*K.x,O.y+x*I.y+y*J.y+z*K.y,O.z+x*I.z+y*J.z+z*K.z);
+    }
+    public static Pt R(Pt P, float a, Vec I, Vec J, Pt G) {
+        // Rotated P by a around G in plane (I,J)
+        float x = d(Vec.V(G,P),I);
+        float y = d(Vec.V(G,P),J);
+        float c = (float) Math.cos(a);
+        float s = (float) Math.sin(a);
+        return P(P,x*c-x-y*s,I,x*s+y*c-y,J);
+    }
+    public static void makePts(Pt[] C) { //TODO change return type
+        // fills array C with points initialized to (0,0,0)
+        for(int i=0; i<C.length; i++){
+            C[i]=P();
+        }
+    }
+    public static Pt Predict(Pt A, Pt B, Pt C) {
+        // B+AC, parallelogram predictor
+        return P(B,Vec.V(A,C));
+    }
+    /*public static void v(Pt P) { //TODO figure out what this does
+        // rendering
+        vertex(P.x,P.y,P.z);
+    }*/
+// ===== measures
+    public static float d(Vec U, Vec V) {
+        //U*V dot product
+        return U.x*V.x+U.y*V.y+U.z*V.z;
+    }
+    public static float d(Pt P, Pt Q) {
+        // ||AB|| distance
+        return (float) Math.sqrt(Math.pow(Q.x-P.x,2)+Math.pow(Q.y-P.y,2)+Math.pow(Q.z-P.z,2));
+    }
+    public static float d2(Pt P, Pt Q) {
+        // AB^2 distance squared
+        return (float) (Math.pow(Q.x-P.x,2)+Math.pow(Q.y-P.y,2)+Math.pow(Q.z-P.z,2));
+    }
+    public static float m(Vec U, Vec V, Vec W) {
+        // (UxV)*W  mixed product, determinant
+        return d(U,Vec.N(V,W));
+    }
+    public static float m(Pt E, Pt A, Pt B, Pt C) {
+        // det (EA EB EC) is >0 when E sees (A,B,C) clockwise
+        return m(Vec.V(E,A),Vec.V(E,B),Vec.V(E,C));
+    }
+    public static float n2(Vec V) {
+        // V*V    norm squared
+        return (float) (Math.pow(V.x,2)+Math.pow(V.y,2)+Math.pow(V.z,2));
+    }
+    public static float n(Vec V) {
+        // ||V||  norm
+        return (float) Math.pow(n2(V), .5);
+    }
+    public static float area(Pt A, Pt B, Pt C) {
+        // area of triangle
+        return n(Vec.N(A,B,C))/2;
+    }
+    public static float volume(Pt A, Pt B, Pt C, Pt D) {
+        // volume of tet
+        return m(V(A,B),V(A,C),V(A,D))/6;
+    }
+    public static boolean parallel (Vec U, Vec V) {
+        // true if U and V are almost parallel
+        return n(N(U,V))<n(U)*n(V)*0.00001;
+    }
+    public static float angle(Vec U, Vec V) {
+        // angle(U,V)
+        return acos(d(U,V)/n(V)/n(U));
+    }
+    public static boolean cw(Vec U, Vec V, Vec W) {
+        // (UxV)*W>0  U,V,W are clockwise
+        return m(U,V,W)>=0;
+    }
+    public static boolean cw(Pt A, Pt B, Pt C, Pt D) {
+        // tet is oriented so that A sees B, C, D clockwise
+        return volume(A,B,C,D)>=0;
+    }
 }
 
 /*
-pt P(pt O, float x, vec I, float y, vec J) {return P(O.x+x*I.x+y*J.x,O.y+x*I.y+y*J.y,O.z+x*I.z+y*J.z);}  // O+xI+yJ
-pt P(pt O, float x, vec I, float y, vec J, float z, vec K) {return P(O.x+x*I.x+y*J.x+z*K.x,O.y+x*I.y+y*J.y+z*K.y,O.z+x*I.z+y*J.z+z*K.z);}  // O+xI+yJ+kZ
-pt R(pt P, float a, vec I, vec J, pt G) {float x=d(V(G,P),I), y=d(V(G,P),J); float c=cos(a), s=sin(a); return P(P,x*c-x-y*s,I,x*s+y*c-y,J); }; // Rotated P by a around G in plane (I,J)
-void makePts(pt[] C) {for(int i=0; i<C.length; i++) C[i]=P();} // fills array C with points initialized to (0,0,0)
-pt Predict(pt A, pt B, pt C) {return P(B,V(A,C)); };     // B+AC, parallelogram predictor
-void v(pt P) {vertex(P.x,P.y,P.z);} // rendering
-
-
 // ===== mouse tools
 pt Mouse() {return P(mouseX,mouseY,0);};                                          // current mouse location
 pt Pmouse() {return P(pmouseX,pmouseY,0);};
 vec MouseDrag() {return V(mouseX-pmouseX,mouseY-pmouseY,0);};                     // vector representing recent mouse displacement
-
-// ===== measures
-float d(vec U, vec V) {return U.x*V.x+U.y*V.y+U.z*V.z; };                                            //U*V dot product
-float d(pt P, pt Q) {return sqrt(sq(Q.x-P.x)+sq(Q.y-P.y)+sq(Q.z-P.z)); };                            // ||AB|| distance
-float d2(pt P, pt Q) {return sq(Q.x-P.x)+sq(Q.y-P.y)+sq(Q.z-P.z); };                                 // AB^2 distance squared
-float m(vec U, vec V, vec W) {return d(U,N(V,W)); };                                                 // (UxV)*W  mixed product, determinant
-float m(pt E, pt A, pt B, pt C) {return m(V(E,A),V(E,B),V(E,C));}                                    // det (EA EB EC) is >0 when E sees (A,B,C) clockwise
-float n2(vec V) {return sq(V.x)+sq(V.y)+sq(V.z);};                                                   // V*V    norm squared
-float n(vec V) {return sqrt(n2(V));};                                                                // ||V||  norm
-float area(pt A, pt B, pt C) {return n(N(A,B,C))/2; };                                               // area of triangle
-float volume(pt A, pt B, pt C, pt D) {return m(V(A,B),V(A,C),V(A,D))/6; };                           // volume of tet
-boolean parallel (vec U, vec V) {return n(N(U,V))<n(U)*n(V)*0.00001; }                               // true if U and V are almost parallel
-float angle(vec U, vec V) {return acos(d(U,V)/n(V)/n(U)); };                                         // angle(U,V)
-boolean cw(vec U, vec V, vec W) {return m(U,V,W)>=0; };                                              // (UxV)*W>0  U,V,W are clockwise
-boolean cw(pt A, pt B, pt C, pt D) {return volume(A,B,C,D)>=0; };                                    // tet is oriented so that A sees B, C, D clockwise
 
 // ===== rotate
 
