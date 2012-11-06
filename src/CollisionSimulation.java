@@ -87,16 +87,22 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	}
 
 	public void keyPressed(){
-	    System.out.println("key pressed");
 	    if (g.key == 's') {
             try {
                 curve.writeCurve();
-                System.out.println("Curve write");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
+        }else if (g.key == 'r') {
+	        try {
+	            curve.readCurve();
+	        } catch (IOException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	        }
+	    }
+
 	}
 
 	public void draw(PApplet c) {

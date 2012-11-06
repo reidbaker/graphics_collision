@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -135,13 +137,22 @@ class Curve {
 	    return -1;
 	}
 	public void writeCurve() throws IOException{
-	    BufferedWriter writer = new BufferedWriter(new FileWriter("data.txt"));
-	    writer.write("" + stroke_color);
-	    writer.newLine();
+	    BufferedWriter writer = new BufferedWriter(new FileWriter("../data.txt"));
 	    for (int i = 0; i < controls.size(); i++) {
 	        writer.write(controls.get(i).pos.toString());
 	        writer.newLine();
         }
 	    writer.close();
 	}
+    public void readCurve() throws IOException{
+        BufferedReader reader = new BufferedReader(new FileReader("../data.txt"));
+        String line = null;
+        controls.clear();
+        while((line = reader.readLine()) != null){
+           controls.add(new Nub(line));
+        }
+        recalculate();
+        reader.close();
+    }
+
 }

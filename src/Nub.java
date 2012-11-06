@@ -16,6 +16,17 @@ public class Nub implements Widget, MouseMotionListener {
 		radius = DEFAULT_RADIUS;
 		circle_color = 0xFF3C6BDE;
 	}
+    Nub(String s) {
+        //s.replace('(', ' ').replace(')', ' ').replace(',', ' ')
+        int fComma = s.indexOf(',');
+        int sComma = s.indexOf(',', fComma+1);
+        float x = Float.parseFloat(s.substring(s.indexOf('(')+1,fComma));
+        float y = Float.parseFloat(s.substring(fComma+1,sComma));
+        float z = Float.parseFloat(s.substring(sComma+1, s.indexOf(')')));
+        pos = new Point(x,y,z);
+        radius = DEFAULT_RADIUS;
+        circle_color = 0xFF3C6BDE;
+    }
 
 	Nub(float x, float y, float z) {
 		this(new Point(x, y, z));
