@@ -53,6 +53,6 @@ public class Particle implements Widget, MouseMotionListener {
     }
     
     // update
-    
+    pos.add(velocity);
   }
 }

@@ -27,7 +27,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		width = g.width;
 		height = g.height;
 
-		curve = new Curve(0xFFFF0000);
+		curve = new Curve(0xFFFFFF00);
 		Random r = new Random();
 		for (int i = 0; i < 3; i++) {
 			curve.addControlPoint(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
@@ -43,7 +43,6 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 	public void mouseMoved(float x, float y) {
 		if (g.mousePressed) {
-
 			for (Nub k: curve.controls) {
 				if (k != null && k.over(x, y)) {
 					if (currentNub == null) {
@@ -61,6 +60,8 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 			dragging = true;
 		}
+		
+		if (currentNub == null) GraphicsCollision.getInstance().rotate();
 
 		if (!g.mousePressed) {
 			currentNub = null;
@@ -69,6 +70,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	}
 
 	public void mouseClicked(float x, float y) {
+		System.out.println(Geometry3D.get3DPoint(x, y));
 		if (g.key == 'g') {
 			Nub n = new Nub(Geometry3D.get3DPoint(x, y));
 			curve.addControlPoint(n);

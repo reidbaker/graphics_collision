@@ -14,6 +14,11 @@ public class GraphicsCollision extends PApplet {
 	public GLU glu;
 	public GL gl;
 
+	private Point eye;
+	private Point focus;
+	private Point up;
+	private Vector I = new Vector(1,0,0), J = new Vector(0,1,0), K = new Vector(0,0,1); // picked surface point Q and screen aligned vectors {I,J,K} set when picked
+
 	final String TITLE = "COLLISION SIMULATOR";
 
 	//Colors
@@ -47,7 +52,6 @@ public class GraphicsCollision extends PApplet {
 	}
 
 	boolean isSetup;
-	private CollisionSimulation simulation;
 	private ArrayList<Widget> widgets = new ArrayList<Widget>();
 	public void setup() {
 
@@ -62,26 +66,31 @@ public class GraphicsCollision extends PApplet {
 			pgl = (PGraphicsOpenGL) g;
 			gl = pgl.beginGL();
 			pgl.endGL();
+			
+			initializeViews();
 
-			isSetup = true;
 			// load the fonts for our interface
-//			interfaceFont = loadFont("Roboto-Bold-13.vlw");
-//			textFont(interfaceFont, 13);
+			//			interfaceFont = loadFont("Roboto-Bold-13.vlw");
+			//			textFont(interfaceFont, 13);
 
-			simulation = new CollisionSimulation(this, 7, 7);
-
-			widgets.add(simulation);
-			// widgets.add(new PictureWindow("profile.jpg", 630, 40));
-
-			// set the framerate to be convenient
-			frameRate(32);
+			widgets.add(new CollisionSimulation(this, 7, 7));
+			isSetup = true;
 		}
+	}
+	
+	private void initializeViews() {
+		focus  = new Point(0,0,0); 
+		eye = new Point(0,0,1000); 
+		up = new Vector(0,1,1);
 	}
 
 	public void draw() {
-		line(40,40,mouseX,mouseY);
+		camera(); // reset to 2d;
 		//drawBackground();
 		background(0xFFFFFFFF);
+
+	//	camera(eye.x, eye.y, eye.z, focus.x, focus.y, focus.z, up.x, up.y, up.z);
+
 		for (Widget widget: widgets) {
 			widget.draw(this);
 		}
@@ -129,19 +138,6 @@ public class GraphicsCollision extends PApplet {
 
 	}
 
-	public void drawAxes(){
-
-	}
-
-	public void drawData(){
-		// Set colors and draw lines. Use a thicker stroke is possible
-	}
-
-	/*public Vec MouseDrag(){
-        // vector representing recent mouse displacement
-	    return Vec.V((float)mouseX-pmouseX,(float)mouseY-pmouseY,0f);
-	}*/
-
 	public static GraphicsCollision getInstance() {
 		return instance;
 	}
@@ -152,20 +148,25 @@ public class GraphicsCollision extends PApplet {
 	 */
 	public void keyPressed() {
 
-	  switch(key) {
+		switch(key) {
 
-	  }
+		}
 
-	  if (keyCode == DOWN || key == '[') {
-	  }
+		if (keyCode == DOWN || key == '[') {
+		}
 	}
 
 	public void keyReleased() {
-	  switch(key) {
-	    case 'z': case 'Z':
-	      // zDown = false;
-	      break;
-	  }
+		switch(key) {
+		case 'z': case 'Z':
+			// zDown = false;
+			break;
+		}
+	}
+
+	void rotate() {
+		eye=Point.rotatePointAroundPlane(eye,  PI*(mouseX-pmouseX)/width,I,K,focus); 
+		eye=Point.rotatePointAroundPlane(eye, -PI*(mouseY-pmouseY)/width,J,K,focus);
 	}
 
 	/**
@@ -173,39 +174,44 @@ public class GraphicsCollision extends PApplet {
 	 */
 	public void mouseMoved() {
 
-	  // check to see if we're over a widget,
-	  // and if we are, update that widget
-	  for (int i = 0; i < widgets.size(); i++) {
-	    Widget widget = (Widget)widgets.get(i);
-	    if (widget.over(mouseX, mouseY)) {
-	      widget.mouseMoved(mouseX, mouseY);
-	    }
-	  }
+		boolean over = false;
+
+		// check to see if we're over a widget,
+		// and if we are, update that widget
+		for (int i = 0; i < widgets.size(); i++) {
+			Widget widget = (Widget)widgets.get(i);
+			if (widget.over(mouseX, mouseY)) {
+				widget.mouseMoved(mouseX, mouseY);
+				over = true;
+			}
+		}
+
+		if (!over) rotate();
 	}
 
 	public void mouseDragged() {
-	  // check to see if we're over a widget,
-	  // and if we are, update that widget
-	  for (int i = 0; i < widgets.size(); i++) {
-	    Widget widget = (Widget)widgets.get(i);
-	    if (widget.over(mouseX, mouseY)) {
-	      // widget.onHover();
-	      widget.mouseMoved(mouseX, mouseY);
-	    }
-	  }
+		// check to see if we're over a widget,
+		// and if we are, update that widget
+		for (int i = 0; i < widgets.size(); i++) {
+			Widget widget = (Widget)widgets.get(i);
+			if (widget.over(mouseX, mouseY)) {
+				// widget.onHover();
+				widget.mouseMoved(mouseX, mouseY);
+			}
+		}
 	}
 
 	/**
 	 * What happens when we click the mouse.
 	 */
 	public void mousePressed() {
-	    // are we clicking on a widget?
-	    for (int i = 0; i < widgets.size(); i++) {
-	      Widget widget = (Widget)widgets.get(i);
-	      if (widget.over(mouseX,mouseY)) {
-	        widget.mouseClicked(mouseX,mouseY);
-	      }
-	    }
+		// are we clicking on a widget?
+		for (int i = 0; i < widgets.size(); i++) {
+			Widget widget = (Widget)widgets.get(i);
+			if (widget.over(mouseX,mouseY)) {
+				widget.mouseClicked(mouseX,mouseY);
+			}
+		}
 	}
 
 }

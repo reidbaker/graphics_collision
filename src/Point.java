@@ -87,12 +87,27 @@ public class Point {
 	public static Point rotateVector90(Point v) {
 		return new Point(-v.y, v.x);
 	}
+	
+	public static Vector rotatePointAroundPlane(Point p, float a, Vector I, Vector J, Point g) {
+		float x = dist(Point.sub(g,p),I), 
+			  y = dist(Point.sub(g,p),J);
+		
+		float c=(float) Math.cos(a), s=(float) Math.sin(a); 
+		return Vector.add(Vector.mult(I,x*c-x-y*s),Vector.mult(J,x*s+y*c-y));
+	};
 
 
 	public static Point rotateVector(Point v, float angle) {
 		float c=(float) Math.cos(angle), s=(float) Math.sin(angle);
 		return(new Point(v.x*c-v.y*s,v.x*s+v.y*c));
 	}
+	
+	// Rotated V by a parallel to plane (I,J)
+	public static Point rotateVectorParallelToPlane(Point v, float angle, Point I, Point J) {
+		float x=dist(v,I), y=dist(v,J);
+		float c=(float) Math.cos(angle), s=(float) Math.sin(angle);
+		return Point.add(v,Point.add(Point.mult(I,x*c-x-y*s),Point.mult(J,x*s+y*c-y))); 
+	}; 
 
 	public static float dot(Point u, Point v) {
 		return u.x*v.x + u.y*v.y + u.z*v.z;
