@@ -1,9 +1,9 @@
 // ===== vector class
-class Vector { 
-    float x;
-    float y;
-    float z;
-    
+public class Vector {
+    public float x;
+    public float y;
+    public float z;
+
     public Vector () {
         x = 0;
         y = 0;
@@ -14,10 +14,10 @@ class Vector {
     }
     public Vector set(float px, float py, float pz) {
         x = px; y = py; z = pz; return this;
-    } 
+    }
     public Vector set (Vector V) {
         x = V.x; y = V.y; z = V.z; return this;
-    } 
+    }
     public Vector add(Vector V) {
         x+=V.x; y+=V.y; z+=V.z; return this;
         }
@@ -41,12 +41,12 @@ class Vector {
     }
     public float norm() {
         return (float) (Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2)));
-    } 
+    }
     public Vector normalize() {
         float n=norm();
         if (n>0.000001) {
             div(n);
-        } 
+        }
         return this;
     }
     /*public Vec rotate(float a, Vec I, Vec J) {
@@ -59,15 +59,15 @@ class Vector {
         add(x*s+y*c-y,J);
         return this;
     }*/
-    
+
     //Vector functions
     public static Vector V(Vector V) {
      // make copy of vector V
-        return new Vector(V.x,V.y,V.z); 
+        return new Vector(V.x,V.y,V.z);
     }
-    
+
     public static Vector A(Vector A, Vector B) {
-        // A+B    
+        // A+B
         return new Vector(A.x+B.x,A.y+B.y,A.z+B.z);
     }
     public static Vector A(Vector U, float s, Vector V) {
@@ -87,7 +87,7 @@ class Vector {
         float newX = (float) ((A.x+B.x)/2.0);
         float newY = (float) ((A.y+B.y)/2.0);
         float newZ = (float) ((A.z+B.z)/2.0);
-        return new Vector(newX,newY,newZ); 
+        return new Vector(newX,newY,newZ);
     }
     public static Vector V(Vector A, float s, Vector B) {
      // (1-s)A+sB
@@ -109,7 +109,7 @@ class Vector {
         return new Vector(s*A.x,s*A.y,s*A.z);
     }
     public static Vector V(float a, Vector A, float b, Vector B) {
-        // aA+bB 
+        // aA+bB
         return A(V(a,A),V(b,B));
     }
     public static Vector V(float a, Vector A, float b, Vector B, float c, Vector C) {
@@ -152,10 +152,9 @@ class Vector {
     /*Vec R(Vec V, float a, Vec I, Vec J) {
      // Rotated V by a parallel to plane (I,J)
         float x=d(V,I); //TODO implement dot product
-        float y=d(V,J); 
+        float y=d(V,J);
         float c=Math.cos(a);
-        float s=Math.sin(a); 
+        float s=Math.sin(a);
         return A(V,V(x*c-x-y*s,I,x*s+y*c-y,J));
     }*/
 }
-

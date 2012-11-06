@@ -1,3 +1,4 @@
+
 // ===== point class
 public class Point {
 	float x, y, z;
@@ -5,7 +6,11 @@ public class Point {
 	public Point(){
 		this(0,0,0);
 	}
-	
+	public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
+	        //s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
+	        return Point.lerp(Point.lerp(p0, 9/8, p1),(float) .5, Point.lerp(p3, 9/8, p2));
+    }
+
 	public Point (float px, float py, float pz) {
 		x = px;
 		y = py;
@@ -38,11 +43,11 @@ public class Point {
 		z+=dz;
 		return this;
 	}
-	
+
 	public static Point sub(Point a, Point b) {
 	    return new Point(a.x - b.x, a.y - b.y, a.z - b.z);
 	}
-	
+
 	public Point sub(Point P) {
 		x-=P.x;
 		y-=P.y;
@@ -93,7 +98,7 @@ public class Point {
 		// copy of point P
 		return new Point(A.x,A.y,A.z);
 	}
-	public static Point P(Point A, float s, Point B) {
+	public static Point lerp(Point A, float s, Point B) {
 		// A+sAB
 		return new Point(A.x+s*(B.x-A.x),A.y+s*(B.y-A.y),A.z+s*(B.z-A.z));
 	}
@@ -171,7 +176,6 @@ public class Point {
 		return P(B,Vector.V(A,C));
 	}
 	/*public static void v(Pt P) { //TODO figure out what this does
-
         // rendering
         vertex(P.x,P.y,P.z);
     }*/

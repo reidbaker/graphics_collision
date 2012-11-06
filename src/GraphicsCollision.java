@@ -43,7 +43,7 @@ public class GraphicsCollision extends PApplet {
 	public static void main(String[] args) {
 		PApplet.main(new String[] { "--present", "GraphicsCollision" });
 	}
-	
+
 	public void setColors() {
 	}
 
@@ -65,7 +65,6 @@ public class GraphicsCollision extends PApplet {
 			pgl.endGL();
 
 			isSetup = true;
-			
 			// load the fonts for our interface
 //			interfaceFont = loadFont("Roboto-Bold-13.vlw");
 //			textFont(interfaceFont, 13);
