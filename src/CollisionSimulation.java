@@ -84,7 +84,10 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			return;
 		}else if(g.key == 'd'){
 	        int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x, y));
-	        curve.controls.remove(closeLoc);
+	        curve.controls.remove(closeLoc); //remove closest point
+	        curve.points.clear(); //clear out old points so that resample will subdivide
+	        curve.points = curve.getNubPositions();
+	        resampleCurrentStroke();
 		}
 	}
 
