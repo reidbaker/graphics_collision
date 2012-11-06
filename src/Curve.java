@@ -61,7 +61,7 @@ class Curve {
 				p = points.get(i);
 				c.pushMatrix();
 				c.translate(p.x,p.y,p.z);
-				c.sphere(10);
+				c.sphere(2);
 				c.popMatrix();
 			}
 		}

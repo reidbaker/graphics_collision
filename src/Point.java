@@ -82,7 +82,7 @@ public class Point {
 	public static Point midPoint(Point a, Point b) {
 		return new Point((a.x+b.x)/2,(a.y+b.y)/2, (a.z+b.z)/2);
 	}
-
+	
 	public static Point lerp(Point a, float t, Point b) {
 		Point d = sub(b, a);
 		return add(a, mult(d, t));
@@ -101,8 +101,12 @@ public class Point {
 			  y = dist(Point.sub(g,p),J);
 		
 		float c=(float) Math.cos(a), s=(float) Math.sin(a); 
-		return Point.add(Point.mult(I,x*c-x-y*s),Point.mult(J,x*s+y*c-y));
+		return baryCentric(p,x*c-x-y*s,I,x*s+y*c-y,J);
 	};
+	
+	public static Point baryCentric (Point O, float x, Point I, float y, Point J){
+		 return new Point(O.x+x*I.x+y*J.x,O.y+x*I.y+y*J.y,O.z+x*I.z+y*J.z);
+	}
 
 
 	public static Point rotateVector(Point v, float angle) {

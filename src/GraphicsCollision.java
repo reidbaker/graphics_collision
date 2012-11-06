@@ -87,9 +87,9 @@ public class GraphicsCollision extends PApplet {
 		eye = new Point(0,0,500); 
 		up = new Point(0,1,0);
 		Q = new Point();
-		I = new Point();
-		J = new Point();
-		K = new Point();
+		I = new Point(1,0,0);
+		J = new Point(0,1,0);
+		K = new Point(0,0,1);
 	}
 
 	float i;
@@ -97,20 +97,19 @@ public class GraphicsCollision extends PApplet {
 		camera(); // reset to 2d;
 		//drawBackground();
 		background(0xFFFFFFFF);
-
-		Geometry3D.setFrame(Q, I, J, K);
-		pushMatrix();
-//		camera(eye.x, eye.y, eye.z, focus.x, focus.y, focus.z, up.x, up.y, up.z); // defines the view : eye, ctr, up
-		changeViewAndFrame();
-		translate(-width/2, -height/2);
 		
+		drawTopBar();
+
+		// Geometry3D.setFrame(Q, I, J, K);
+		camera(eye.x, eye.y, eye.z, focus.x, focus.y, focus.z, up.x, up.y, up.z); // defines the view : eye, ctr, up
+
+		//		camera(eye.x, eye.y, eye.z, focus.x, focus.y, focus.z, up.x, up.y, up.z); // defines the view : eye, ctr, up
+		//		changeViewAndFrame();
+		//translate(-width/2, -height/2);
+
 		for (Widget widget: widgets) {
 			widget.draw(this);
 		}
-		
-		popMatrix();
-
-		drawTopBar();
 
 	}
 
@@ -118,7 +117,7 @@ public class GraphicsCollision extends PApplet {
 
 	void  changeViewAndFrame() {
 		float ca=cos(a), sa=sin(a), cb=cos(b), sb=sin(b); // viewing direction angles
-		if (keyPressed&&key=='d') d-=mouseY-pmouseY;  // changes distance form the target to the viewpoint
+		if (keyPressed&&key=='z') d-=mouseY-pmouseY;  // changes distance form the target to the viewpoint
 		eye.x = d*cb*ca;
 		eye.y = d*sa;
 		eye.z =  d*sb*ca;
@@ -194,9 +193,10 @@ public class GraphicsCollision extends PApplet {
 	void rotate() {
 		eye=Point.rotatePointAroundPlane(eye, PI*(mouseX-pmouseX)/width,I,K,focus); 
 		eye=Point.rotatePointAroundPlane(eye,-PI*(mouseY-pmouseY)/width,J,K,focus);
-		rx += (mouseX - pmouseX)*.1f;
-		ry += (mouseY - pmouseY)*.1f;
-		// rz += y;
+	}
+
+	void zoom() {
+		eye = Point.addScaledVector(eye, K, -(float)(mouseY-pmouseY));
 	}
 
 	/**
@@ -222,13 +222,16 @@ public class GraphicsCollision extends PApplet {
 	public void mouseDragged() {
 		// check to see if we're over a widget,
 		// and if we are, update that widget
+
+		if (keyPressed && key == 'r') rotate();
+		else if (keyPressed && key == 'z') zoom();
 		
-		if (keyPressed && key=='d') a-=PI*(mouseY-pmouseY)/height; a=(float) Math.max(-PI/2+0.1,a); a=(float) Math.min(PI/2-0.1,a);  b+=PI*(mouseX-pmouseX)/width; 
-//		rotate();
-		for (int i = 0; i < widgets.size(); i++) {
-			Widget widget = (Widget)widgets.get(i);
-			if (widget.over(mouseX, mouseY)) {
-				widget.mouseMoved(mouseX, mouseY);
+		else {
+			for (int i = 0; i < widgets.size(); i++) {
+				Widget widget = (Widget)widgets.get(i);
+				if (widget.over(mouseX, mouseY)) {
+					widget.mouseMoved(mouseX, mouseY);
+				}
 			}
 		}
 	}

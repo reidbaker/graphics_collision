@@ -45,8 +45,17 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		    	}
 		    	
 		    	for (Particle q: particles) {
-		    		if (!q.equals(p) && p.collides(q)) {
-		    			Particle.exchangeVelocities(p, q);
+		    		if (!q.equals(p)) {
+		    			float t = 1/GraphicsCollision.getInstance().frameRate;
+		    			while (t > 0) {
+		    				float m = Particle.collision(p,q); 
+		    				if (m > 0) {
+//		    					Particle.exchangeVelocities(p, q);
+		    					t -= m; 
+		    				} else {
+		    					break;
+		    				}
+		    			}
 		    		}
 		    	}
 		    }
@@ -58,7 +67,7 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		
 		if (++t >= 30 && particles.size() < MAX_PARTICLES) {
 			Random r = new Random();
-			particles.add(new Particle(curve, r.nextInt(50) + pos.x, r.nextInt(50) + pos.y,  r.nextInt(50) + pos.z));
+			particles.add(new Particle(curve, radius + pos.x + r.nextInt(10), radius + pos.x + pos.y + r.nextInt(10),  radius + pos.z + r.nextInt(10)));
 		}
 		
 	}
