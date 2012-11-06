@@ -4,16 +4,10 @@ import processing.core.PImage;
 
 public class World extends Particle{
     PImage worldPNG;
-    float x;
-    float y;
-    float z;
 
     World(float x, float y, float z) {
-        super(null, x, y, z);
+        super(null, x, y, z, 20);
         worldPNG = GraphicsCollision.getInstance().loadImage("../map.png");
-        this.x = x;
-        this.y = y;
-        this.z = z;
     }
 
     public void draw(PApplet c){
@@ -41,52 +35,52 @@ public class World extends Particle{
             float cosjp = (float) Math.cos( Math.toRadians( j + step ));
 
             // Upper hemisphere
-            c.vertex( (R * cosj * sini)+x,
-                    (R * -cosi)+y,
-                    (R * sinj * sini)+z, // x, y, z
+            c.vertex( (R * cosj * sini)+pos.x,
+                    (R * -cosi)+pos.y,
+                    (R * sinj * sini)+pos.z, // x, y, z
                     tex.width-j * tex.width / 360, i * tex.height / 180 // u, v
                     );
 
-            c.vertex( (R * cosjp * sini)+x,
-                    (R * -cosi)+y,
-                    (R * sinjp * sini)+z,
+            c.vertex( (R * cosjp * sini)+pos.x,
+                    (R * -cosi)+pos.y,
+                    (R * sinjp * sini)+pos.z,
                     tex.width-(j + step ) * tex.width / 360, i * tex.height / 180
             );
 
-            c.vertex( (R * cosj * sinip)+x,
-                    (R * -cosip)+y,
-                    (R * sinj * sinip)+z,
+            c.vertex( (R * cosj * sinip)+pos.x,
+                    (R * -cosip)+pos.y,
+                    (R * sinj * sinip)+pos.z,
                     tex.width-j * tex.width / 360, (i + step ) * tex.height / 180
                     );
 
-            c.vertex((R * cosjp * sinip)+x,
-                    (R * -cosip)+y,
-                    (R * sinjp * sinip)+z,
+            c.vertex((R * cosjp * sinip)+pos.x,
+                    (R * -cosip)+pos.y,
+                    (R * sinjp * sinip)+pos.z,
                     tex.width-(j + step ) * tex.width / 360, (i + step ) * tex.height / 180
                     );
 
             // Lower hemisphere
-            c.vertex( (R * cosj * sini)+x,
-                    (R * cosi)+y,
-                    (R * sinj * sini)+z,
+            c.vertex( (R * cosj * sini)+pos.x,
+                    (R * cosi)+pos.y,
+                    (R * sinj * sini)+pos.z,
                     tex.width-j * tex.width / 360, tex.height - i * tex.height / 180
                     );
 
-            c.vertex( (R * cosjp * sini)+x,
-                    (R * cosi)+y,
-                    (R * sinjp * sini)+z,
+            c.vertex( (R * cosjp * sini)+pos.x,
+                    (R * cosi)+pos.y,
+                    (R * sinjp * sini)+pos.z,
                     tex.width-(j + step ) * tex.width / 360, tex.height - i * tex.height / 180
                     );
 
-            c.vertex( (R * cosj * sinip)+x,
-                    (R * cosip)+y,
-                    (R * sinj * sinip)+z,
+            c.vertex( (R * cosj * sinip)+pos.x,
+                    (R * cosip)+pos.y,
+                    (R * sinj * sinip)+pos.z,
                     tex.width-j * tex.width / 360, tex.height - (i+step) * tex.height / 180
                     );
 
-            c.vertex( (R * cosjp * sinip)+x,
-                    (R * cosip)+y,
-                    (R * sinjp * sinip)+z,
+            c.vertex( (R * cosjp * sinip)+pos.x,
+                    (R * cosip)+pos.y,
+                    (R * sinjp * sinip)+pos.z,
                     tex.width-(j+step) * tex.width / 360, tex.height - (i+step) * tex.height / 180
                     );
           }

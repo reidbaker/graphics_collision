@@ -21,7 +21,6 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		radius = r;
 		curve = c;
         w = new World((float)-100, (float)-100, (float)-100);
-        particles.add(w);
 	}
 
 	@Override
@@ -36,21 +35,21 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			
 			Particle p = particles.get(i);
-			
 			Point closest = curve.getClosestPoint(p.pos);
 		    
 		    if (closest != null) {
 		    	p.velocity = curve.getTangent(closest);
 		    	p.velocity.normalize();
 		    	p.velocity.mult(.2f*Point.dist(closest, p.pos));
-		    	
+
 		    	if (curve.isLastPoint(closest)) {
 		    		particles.remove(p);
 		    	}
 		    	
 		    	for (Particle q: particles) {
 		    		if (!q.equals(p)) {
-		    			float t = 1/GraphicsCollision.getInstance().frameRate;
+		                //p.velocity = Point.add(p.velocity, Particle.force(p, q));
+		                float t = 1/GraphicsCollision.getInstance().frameRate;
 		    			while (t > 0) {
 		    				float m = Particle.collision(p,q); 
 		    				if (m > 0) {
@@ -62,10 +61,12 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		    			}
 		    		}
 		    	}
+
 		    }
 		    
 		    // update
-		    p.pos.add(p.velocity);
+            p.velocity = Point.add(p.velocity, Particle.force(p, w));
+            p.pos.add(p.velocity);
 		    p.draw(c);
 		}
 		

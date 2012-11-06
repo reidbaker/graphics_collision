@@ -40,12 +40,20 @@ public class Point {
 		z *= s;
 	}
 
-	void normalize() {
-		double magnitude = Math.sqrt(x*x+y*y+z*z);
-		x *= 1/magnitude;
-		y *= 1/magnitude;
-		z *= 1/magnitude;
-	}
+    void normalize() {
+        double magnitude = Math.sqrt(x*x+y*y+z*z);
+        x *= 1/magnitude;
+        y *= 1/magnitude;
+        z *= 1/magnitude;
+    }
+
+    public static Point normalize(Point p) {
+        double magnitude = Math.sqrt(p.x*p.x+p.y*p.y+p.z*p.z);
+        p.x *= 1/magnitude;
+        p.y *= 1/magnitude;
+        p.z *= 1/magnitude;
+        return p;
+    }
 
 
 	//********************
