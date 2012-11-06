@@ -47,6 +47,7 @@ public class Particle implements Widget, MouseMotionListener {
     c.popMatrix();
     
     Point closest = curve.getClosestPoint(pos);
+    Vector velocity = curve.getTangent(closest);
     if (closest != null) {
     	c.stroke(sphere_color);
     	c.line(pos.x,pos.y,pos.z,closest.x,closest.y,closest.z);

@@ -127,4 +127,25 @@ class Curve {
         }
 	    return positions;
 	}
+	public Vector getTangent(Point p){
+	    int index = findPoint(p);
+	    if(index ==0 || index == points.size()-1){
+	        return new Vector();
+	    }else{
+	        float dx = points.get(index+1).x - points.get(index-1).x;
+	        float dy = points.get(index+1).y - points.get(index-1).y;
+	        float dz = points.get(index+1).z - points.get(index-1).z;
+	        return new Vector(dx, dy, dz);
+	    }
+	}
+
+	private int findPoint(Point p){
+	    for (int i = 0; i < points.size(); i++) {
+            if(points.get(i).equals(p)){
+                return i;
+            }
+        }
+	    System.out.println("Point didnt match any points");
+	    return -1;
+	}
 }

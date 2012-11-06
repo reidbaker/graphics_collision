@@ -38,6 +38,8 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	}
 
 	void resampleCurrentCurve() {
+        curve.points.clear(); //clear out old points so that resample will subdivide
+        curve.points = curve.getNubPositions();
 		curve.resample();
 	}
 
@@ -76,11 +78,13 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			curve.addControlPoint(n);
 			return;
 		}else if(g.key == 'd'){
-	        int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x, y));
+            int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x, y));
 	        curve.controls.remove(closeLoc); //remove closest point
-	        curve.points.clear(); //clear out old points so that resample will subdivide
-	        curve.points = curve.getNubPositions();
-	        resampleCurrentCurve();
+            resampleCurrentCurve();
+		}else if(g.key == 'm'){
+            int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x, y));
+            curve.controls.get(closeLoc).pos = Geometry3D.get3DPoint(x, y);
+            resampleCurrentCurve();
 		}
 	}
 
