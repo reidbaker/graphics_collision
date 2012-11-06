@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
@@ -118,7 +121,6 @@ class Curve {
 	        float dz = points.get(index+1).z - points.get(index-1).z;
 	        
 	        Point v = new Point(dx, dy, dz);
-	        System.out.println(v);
 	        return v;
 	    }
 	}
@@ -126,11 +128,20 @@ class Curve {
 	private int findPoint(Point p){
 	    for (int i = 0; i < points.size(); i++) {
             if(points.get(i).equals(p)){
-            	System.out.println(i);
                 return i;
             }
         }
 	    System.out.println("Point didnt match any points");
 	    return -1;
+	}
+	public void writeCurve() throws IOException{
+	    BufferedWriter writer = new BufferedWriter(new FileWriter("data.txt"));
+	    writer.write("" + stroke_color);
+	    writer.newLine();
+	    for (int i = 0; i < controls.size(); i++) {
+	        writer.write(controls.get(i).pos.toString());
+	        writer.newLine();
+        }
+	    writer.close();
 	}
 }

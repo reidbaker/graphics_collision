@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -60,7 +61,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 			dragging = true;
 		}
-		
+
 //		if (currentNub == null) GraphicsCollision.getInstance().rotate();
 
 		if (!g.mousePressed) {
@@ -70,8 +71,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	}
 
 	public void mouseClicked(float x, float y) {
-		System.out.println(Geometry3D.get3DPoint(x, y));
-		if (g.key == 'g') {
+        if (g.key == 'g') {
 			Nub n = new Nub(Geometry3D.get3DPoint(x, y));
 			curve.addControlPoint(n);
 			return;
@@ -86,6 +86,19 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		}
 	}
 
+	public void keyPressed(){
+	    System.out.println("key pressed");
+	    if (g.key == 's') {
+            try {
+                curve.writeCurve();
+                System.out.println("Curve write");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+	}
+
 	public void draw(PApplet c) {
 
 		// get some lights up in here
@@ -95,7 +108,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		for (Particle p: particles) {
 			p.draw(c);
 		}
-		
+
 		generator.draw(c);
 
         int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(c.mouseX, c.mouseY));

@@ -13,6 +13,7 @@ public class GraphicsCollision extends PApplet {
 	public PGraphicsOpenGL pgl;
 	public GLU glu;
 	public GL gl;
+	private CollisionSimulation simulation;
 
 	private Point eye;
 	private Point focus;
@@ -72,8 +73,8 @@ public class GraphicsCollision extends PApplet {
 			// load the fonts for our interface
 			//			interfaceFont = loadFont("Roboto-Bold-13.vlw");
 			//			textFont(interfaceFont, 13);
-
-			widgets.add(new CollisionSimulation(this, 7));
+			simulation = new CollisionSimulation(this, 7);
+			widgets.add(simulation);
 			isSetup = true;
 		}
 	}
@@ -149,11 +150,11 @@ public class GraphicsCollision extends PApplet {
 	public void keyPressed() {
 
 		switch(key) {
-
 		}
 
 		if (keyCode == DOWN || key == '[') {
 		}
+		simulation.keyPressed();
 	}
 
 	public void keyReleased() {

@@ -40,7 +40,6 @@ public class Point {
 		y *= 1/magnitude;
 		z *= 1/magnitude;
 		
-		System.out.println(this);
 	}
 
 
