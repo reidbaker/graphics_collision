@@ -109,8 +109,8 @@ public class GraphicsCollision extends PApplet {
 
 	public void draw() {
 		line(40,40,mouseX,mouseY);
-		drawBackground();
-
+		//drawBackground();
+		background(0xFFFFFFFF);
 		for (Widget widget: widgets) {
 			widget.draw(this);
 		}
