@@ -92,10 +92,11 @@ class Curve {
 		}
 	}
 
-	public Point getClosestPoint(Point p) {
+	public Point getClosestPoint(Point p, int index) {
 		Point closest = null;
 		float threshold = Integer.MAX_VALUE;
-		for (Point point: points) {
+		for (int i = index; i < points.size(); i++) {
+			Point point = points.get(i);
 			float dist = Point.dist(p, point);
 			if ( dist < threshold) {
 				threshold = dist;
@@ -142,7 +143,7 @@ class Curve {
 	    }
 	}
 
-	private int findPoint(Point p){
+	public int findPoint(Point p){
 	    for (int i = 0; i < points.size(); i++) {
             if(points.get(i).equals(p)){
                 return i;

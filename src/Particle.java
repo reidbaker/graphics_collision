@@ -2,7 +2,7 @@ import processing.core.PApplet;
 
 public class Particle implements Widget, MouseMotionListener {
 
-	final static int DEFAULT_RADIUS = 25;
+	final static int DEFAULT_RADIUS = 15;
 
 	private Curve curve;
 	Point pos;
@@ -11,6 +11,7 @@ public class Particle implements Widget, MouseMotionListener {
 	float mass;
 	static double G = 6.7e-11;
 	int sphere_color = 0xff00ff00;
+	int index = 0;
 
 	Particle(Curve c, Point p, float mass) {
 		curve = c;
@@ -87,10 +88,10 @@ public class Particle implements Widget, MouseMotionListener {
 		c.sphere(radius);
 		c.popMatrix();
 
-		Point closest = curve.getClosestPoint(pos);
+		Point closest = curve.getClosestPoint(pos, index);
 
 		if (closest != null) {
-			c.stroke(sphere_color);
+			c.stroke(sphere_color,50);
 			c.line(pos.x,pos.y,pos.z,closest.x,closest.y,closest.z);
 		}
 

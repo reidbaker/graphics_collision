@@ -35,9 +35,10 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		for (int i = particles.size() - 1; i >= 0; i--) {
 			
 			Particle p = particles.get(i);
-			Point closest = curve.getClosestPoint(p.pos);
+			Point closest = curve.getClosestPoint(p.pos, p.index);
 		    
 		    if (closest != null) {
+		    	p.index = curve.findPoint(closest);
 		    	p.velocity = curve.getTangent(closest);
 		    	p.velocity.normalize();
 		    	p.velocity.mult(.2f*Point.dist(closest, p.pos));
@@ -73,7 +74,7 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		
 		if (++t >= 30 && particles.size() < MAX_PARTICLES) {
 			Random r = new Random();
-			particles.add(new Particle(curve, radius + pos.x + r.nextInt(10), radius + pos.x + pos.y + r.nextInt(10),  radius + pos.z + r.nextInt(10)));
+			particles.add(new Particle(curve, radius + pos.x + r.nextInt(300), radius + pos.x + pos.y + r.nextInt(300),  radius + pos.z + r.nextInt(300)));
 		}
 		
 	}

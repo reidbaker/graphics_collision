@@ -60,7 +60,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	}
 
 	public void mouseClicked(float x, float y) {
-		if (g.key == 'g') {
+		if (g.key == 'a') {
 			Nub n = new Nub(Geometry3D.get3DPoint(x,y));
 			curve.addControlPoint(n);
 			return;
