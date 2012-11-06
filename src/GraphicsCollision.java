@@ -264,7 +264,6 @@ public class GraphicsCollision extends PApplet {
 	 * What happens when we click the mouse.
 	 */
 	public void mousePressed() {
-	  
 	    // are we clicking on a widget?
 	    for (int i = 0; i < widgets.size(); i++) {
 	      Widget widget = (Widget)widgets.get(i);

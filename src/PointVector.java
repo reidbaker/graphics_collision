@@ -17,6 +17,11 @@ public class PointVector {
 		this.z = z;
 	}
 
+	public float[] getXYZ(){
+	    float[] out = {x,y,z};
+	    return out;
+	}
+
 	void add(PointVector p) {
 		x += p.x;
 		y += p.y;
@@ -29,7 +34,7 @@ public class PointVector {
 		y *= 1/magnitude;
 		z *= 1/magnitude;
 	}
-	
+
 	//********************
 	// GENERAL METHODS
 	//********************
@@ -38,7 +43,7 @@ public class PointVector {
 	  for (PointVector v: vectors) {
 	    p.add(v);
 	  }
-	  
+
 	  return p;
 	}
 
@@ -53,7 +58,7 @@ public class PointVector {
 	public static PointVector div(PointVector a, float s) {
 	  return mult(a, 1/s);
 	}
-	
+
 	//****************
 	// MAGIC METHODS
 	//****************
@@ -81,7 +86,7 @@ public class PointVector {
 
 
 	public static PointVector rotateVector(PointVector v, float angle) {
-	  float c=(float) Math.cos(angle), s=(float) Math.sin(angle); 
+	  float c=(float) Math.cos(angle), s=(float) Math.sin(angle);
 	  return(new PointVector(v.x*c-v.y*s,v.x*s+v.y*c));
 	}
 
@@ -94,7 +99,7 @@ public class PointVector {
 	}
 
 	float angle(PointVector a, PointVector b) {
-	  return (float) Math.atan2(dot(rotateVector90(a),b),dot(a,b)); 
+	  return (float) Math.atan2(dot(rotateVector90(a),b),dot(a,b));
 	}
 
 	public static PointVector neville(float t, PointVector ... vectors) {
@@ -109,7 +114,7 @@ public class PointVector {
 	     return neville(t/(len),neville(t, v1), neville(t-1,v2));
 	   }
 	}
-	
+
 	public String toString() {
 		return String.format("(%.2f,%.2f,%.2f)", x,y,z);
 	}

@@ -23,7 +23,8 @@ public class Nub implements Widget, MouseMotionListener {
 	public boolean over(float x, float y) {
 		float dx = x - pos.x;
 		float dy = y - pos.y;
-		return dx*dx + dy*dy <= radius*radius;
+		boolean result = ((dx*dx) + (dy*dy)) <= (radius*radius);
+		return true;
 	}
 
 	public void onClick() {

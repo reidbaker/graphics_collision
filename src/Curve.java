@@ -209,8 +209,8 @@ class Curve {
 			points.add(n.pos);
 		}
 		if (controls.size() > 3) {
-			resample();
-			for (int i = 0; i < 50; i++) smooth();
+		    Point p = Point.subdivision(points.get(0), points.get(1), points.get(2), points.get(3));
+		    points.add(new PointVector(p.x, p.y, p.z));
 		}
 	}
 

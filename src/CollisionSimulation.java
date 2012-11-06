@@ -164,8 +164,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 	@Override
 	public boolean over(float x, float y) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
