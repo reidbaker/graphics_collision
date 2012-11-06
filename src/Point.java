@@ -5,12 +5,12 @@ public class Point {
     public Point(){
         this(0,0,0);
     }
-    public Point subdivision(Point p0, Point p1, Point p2, Point p3){
+    public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
         //s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
-        return Point.midPoint(
-                Point.midPoint(p0, 9/8, p1),
+        return Point.lerp(
+                Point.lerp(p0, 9/8, p1),
                 (float) .5,
-                Point.midPoint(p0, 9/8, p1)
+                Point.lerp(p3, 9/8, p2)
                );
     }
     public Point (float px, float py, float pz) {
@@ -93,7 +93,7 @@ public class Point {
         // copy of point P
         return new Point(A.x,A.y,A.z);
     }
-    public static Point midPoint(Point A, float s, Point B) {
+    public static Point lerp(Point A, float s, Point B) {
         // A+sAB
         return new Point(A.x+s*(B.x-A.x),A.y+s*(B.y-A.y),A.z+s*(B.z-A.z));
     }
