@@ -1,5 +1,3 @@
-import java.awt.Shape;
-import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,21 +6,20 @@ import processing.core.PApplet;
 
 public class CollisionSimulation implements Widget, MouseMotionListener {
 
-	ArrayList<Particle> particles = new ArrayList<Particle>();
-//	ArrayList<Nub> control_points = new ArrayList<Nub>();
-	Nub currentNub;
+	private PApplet g;
 
-	int width;
-	int height;
-	PApplet g;
+	private ArrayList<Particle> particles = new ArrayList<Particle>();
+	private ParticleGenerator generator;
+	private Nub currentNub;
 
-	float t;
-	Shape shape;
+	private int width;
+	private int height;
 
-	Curve curve;
-	Stroke one, two, three, four;
-	int keyframe;
-	boolean dragging = false;
+	private float t;
+	private int keyframe;
+
+	private Curve curve;
+	private boolean dragging = false;
 
 	CollisionSimulation(PApplet p, int ctrl_pnts, int keyframes) {
 
@@ -32,23 +29,19 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 		curve = new Curve(0xFFFF0000);
 		
+		
 		Random r = new Random();
 		for (int i = 0; i < 3; i++) {
-			// control_points.add(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
 			curve.addControlPoint(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
 			particles.add(new Particle(curve, r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
 		}
-
-
+		
+		generator = new ParticleGenerator(curve.points.get(0), 15);
 	}
 
-
-
-
-	void resampleCurrentStroke() {
+	void resampleCurrentCurve() {
 		curve.resample();
 	}
-
 
 	public void mouseMoved(float x, float y) {
 		if (g.mousePressed) {
@@ -93,15 +86,12 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		// get some lights up in here
 		c.lights();
 
-		c.fill(curve.stroke_color);
-		c.textSize(13);
-		c.textAlign(PApplet.CENTER);
-
 		curve.draw(c);
-
 		for (Particle p: particles) {
 			p.draw(c);
 		}
+		
+		generator.draw(c);
 
         int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(c.mouseX, c.mouseY));
         curve.controls.get(closeLoc).setCircleColor(c.color(250,0,0));
