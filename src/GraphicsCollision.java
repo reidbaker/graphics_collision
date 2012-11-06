@@ -56,7 +56,7 @@ public class GraphicsCollision extends PApplet {
 		}
 	}
 
-	public void draw() {
+	public void draw(){
 		//pgl.beginDraw();
 		//pgl.background(102);
 		//pgl.stroke(255);
@@ -66,15 +66,15 @@ public class GraphicsCollision extends PApplet {
 	}
 
 
-	public void mouseReleased() {
+	public void mouseReleased(){
 
 	}
 
-	public void drawAxes() {
+	public void drawAxes(){
 
 	}
 
-	public void drawData() {
+	public void drawData(){
 		// Set colors and draw lines. Use a thicker stroke is possible
 	}
 
