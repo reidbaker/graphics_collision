@@ -172,6 +172,7 @@ public class Pt {
             C[i]=P();
         }
     }
+    
     public static Pt Predict(Pt A, Pt B, Pt C) {
         // B+AC, parallelogram predictor
         return P(B,Vec.V(A,C));
