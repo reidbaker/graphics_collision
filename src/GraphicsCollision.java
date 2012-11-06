@@ -73,35 +73,6 @@ public class GraphicsCollision extends PApplet {
 			widgets.add(simulation);
 			// widgets.add(new PictureWindow("profile.jpg", 630, 40));
 
-
-			Button smoothen = new Button(630, 200, 120, 40, "SMOOTH (S)");
-			smoothen.addOnClickListener(new WidgetListener() {
-				public void action() {
-					simulation.smoothCurrentStroke();
-				}
-			}
-					);
-
-			Button subdivide = new Button(760, 200, 120, 40, "SUBDIVIDE (D)");
-			subdivide.addOnClickListener(new WidgetListener() {
-				public void action() {
-					simulation.subdivideCurrentStroke();
-				}
-			}
-					);
-
-
-			Button resetCurve = new Button(630, 350, 250, 40, "RESET STROKES (R)");
-			resetCurve.addOnClickListener(new WidgetListener() {
-				public void action() {
-					simulation.resetCurrentStroke();
-				}
-			});
-
-			widgets.add(smoothen);
-			widgets.add(subdivide);
-			widgets.add(resetCurve);
-
 			// set the framerate to be convenient
 			frameRate(32);
 		}
@@ -182,27 +153,7 @@ public class GraphicsCollision extends PApplet {
 	public void keyPressed() {
 
 	  switch(key) {
-	  case '1':
-	    simulation.setCurrentStroke(0);
-	    break;
-	  case '2':
-	    simulation.setCurrentStroke(1);
-	    break;
-	  case '3':
-	    simulation.setCurrentStroke(2);
-	    break;
-	  case '4':
-	    simulation.setCurrentStroke(3);
-	    break;
-	  case 's': case 'S':
-	    simulation.smoothCurrentStroke();
-	    break;
-	   case 'r': case 'R':
-	    simulation.resetCurrentStroke();
-	    break;
-	   case ' ':
-	     simulation.nextStroke();
-	     break;
+	  
 	  }
 
 	  if (keyCode == DOWN || key == '[') {

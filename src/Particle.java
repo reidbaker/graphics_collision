@@ -4,10 +4,10 @@ public class Particle implements Widget, MouseMotionListener {
 
   final static int DEFAULT_RADIUS = 5;
 
-  Curve curve;
-  
-  Point pos;
-  int radius;
+  private Curve curve;
+  private Point pos;
+  private int radius;
+  private Point velocity;
 
   int sphere_color = 0xff555555;
 
