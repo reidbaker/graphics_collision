@@ -4,19 +4,19 @@ public class Particle implements Widget, MouseMotionListener {
 
   final static int DEFAULT_RADIUS = 5;
 
-  PointVector pos;
+  Point pos;
   int radius;
 
   int sphere_color = 0xff55ff55;
   int text_color = 0x38ffffff;
 
-  Particle(PointVector p) {
+  Particle(Point p) {
     pos = p;
     radius = DEFAULT_RADIUS;
   }
 
   Particle(int x, int y) {
-    this(new PointVector(x, y));
+    this(new Point(x, y));
   }
 
   public boolean over(float x, float y) {

@@ -4,12 +4,11 @@ import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
 
-import processing.core.PApplet;
 import processing.opengl.PGraphicsOpenGL;
 
 public class Geometry3D {
 	
-	public static PointVector[] getScreenRay(float mouseX, float mouseY) {
+	public static Point[] getScreenRay(float mouseX, float mouseY) {
 		
 		GraphicsCollision applet = GraphicsCollision.getInstance();
 		((PGraphicsOpenGL)applet.g).beginGL(); // let's start doing some gl stuff
@@ -36,31 +35,31 @@ public class Geometry3D {
 		applet.gl.glReadPixels((int)x, (int)y, 1, 1, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, fb);
 
 		applet.glu.gluUnProject (x, y, (double)0.0, model, 0, projection, 0, viewport, 0, rayPos, 0);
-		PointVector p1 = new PointVector ( (float) rayPos[0], (float) rayPos[1], (float) rayPos[2]);
+		Point p1 = new Point ( (float) rayPos[0], (float) rayPos[1], (float) rayPos[2]);
 		applet.glu.gluUnProject (x, y, (double)1.0, model, 0, projection, 0, viewport, 0, rayPos, 0);
-		PointVector p2= new PointVector ( (float) rayPos[0], (float) rayPos[1], (float) rayPos[2]);
+		Point p2= new Point ( (float) rayPos[0], (float) rayPos[1], (float) rayPos[2]);
 
 		((PGraphicsOpenGL)applet.g).endGL(); // we're done!
 
-		return new PointVector[] {
+		return new Point[] {
 				p1, p2
 		};
 	}
 
-	public static PointVector getClosestPoint(PointVector[] points, float mouseX, float mouseY, float threshold) {
+	public static Point getClosestPoint(Point[] points, float mouseX, float mouseY, float threshold) {
 
-		PointVector closest = null;
+		Point closest = null;
 
-		PointVector[] ray = getScreenRay(mouseX, mouseY);
+		Point[] ray = getScreenRay(mouseX, mouseY);
 
-		PointVector raySlope = PointVector.sub(ray[1], ray[0]);
+		Point raySlope = Point.sub(ray[1], ray[0]);
 		raySlope.normalize();
 
-		for (PointVector p: points) {
-			PointVector slope = PointVector.sub(ray[0], p);
+		for (Point p: points) {
+			Point slope = Point.sub(ray[0], p);
 			slope.normalize();
 
-			float dist = PointVector.dist(raySlope, slope);
+			float dist = Point.dist(raySlope, slope);
 			if ( dist < threshold) {
 				threshold = dist;
 				closest = p;
@@ -70,7 +69,7 @@ public class Geometry3D {
 		return closest;
 	}
 
-	public static PointVector get3DPoint(float mouseX, float mouseY) {
+	public static Point get3DPoint(float mouseX, float mouseY) {
 
 		GraphicsCollision applet = GraphicsCollision.getInstance();
 		((PGraphicsOpenGL)applet.g).beginGL(); // let's start doing some gl stuff
@@ -101,6 +100,6 @@ public class Geometry3D {
 
 		((PGraphicsOpenGL)applet.g).endGL(); // we're done!
 
-		return new PointVector ( (float) mousePos[0], (float) mousePos[1], (float) mousePos[2]);
+		return new Point ( (float) mousePos[0], (float) mousePos[1], (float) mousePos[2]);
 	}
 }

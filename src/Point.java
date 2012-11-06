@@ -1,3 +1,5 @@
+import processing.core.PApplet;
+
 
 // ===== point class
 public class Point {
@@ -6,251 +8,365 @@ public class Point {
 	public Point(){
 		this(0,0,0);
 	}
-    
-	public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
-	        //s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
-        Point one = Point.lerp(p0, 9.0f/8.0f, p1);
-        Point two = Point.lerp(p3, 9.0f/8.0f, p2);
-        return Point.lerp(one, (float).5, two);
-    }
-    public static Point subdivision(PointVector p0, PointVector p1, PointVector p2, PointVector p3){
-        float[] p0xyz = p0.getXYZ();
-        Point newP0 = new Point(p0xyz[0],p0xyz[1],p0xyz[2]);
 
-        float[] p1xyz = p1.getXYZ();
-        Point newP1 = new Point(p1xyz[0],p1xyz[1],p1xyz[2]);
-
-        float[] p2xyz = p2.getXYZ();
-        Point newP2 = new Point(p2xyz[0],p2xyz[1],p2xyz[2]);
-
-        float[] p3xyz = p3.getXYZ();
-        Point newP3 = new Point(p3xyz[0],p3xyz[1],p3xyz[2]);
-        return subdivision(newP0,newP1,newP2,newP3);
-
-    }
-
-	public Point (float px, float py, float pz) {
-		x = px;
-		y = py;
-		z = pz;
+	public Point(float x, float y){
+		this(0,0,0);
 	}
 
-	public Point add(Point P) {
-		x+=P.x;
-		y+=P.y;
-		z+=P.z;
-		return this;
+	Point(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
-	public Point add(Vector V) {
-		x+=V.x;
-		y+=V.y;
-		z+=V.z;
-		return this;
+
+	public float[] getXYZ(){
+		float[] out = {x,y,z};
+		return out;
 	}
-	public Point add(float s, Vector V) {
-		x+=s*V.x;
-		y+=s*V.y;
-		z+=s*V.z;
-		return this;
+
+	public void add(Point p) {
+		x += p.x;
+		y += p.y;
+		z += p.z;
 	}
-	public Point add(float dx, float dy, float dz) {
-		x+=dx;
-		y+=dy;
-		z+=dz;
-		return this;
+
+	void normalize() {
+		double magnitude = Math.sqrt(x*x+y*y+z*z);
+		x *= 1/magnitude;
+		y *= 1/magnitude;
+		z *= 1/magnitude;
+	}
+
+
+	//********************
+	// GENERAL METHODS
+	//********************
+	public static Point add(Point ... vectors) {
+		Point p = new Point();
+		for (Point v: vectors) {
+			p.add(v);
+		}
+		return p;
 	}
 
 	public static Point sub(Point a, Point b) {
-	    return new Point(a.x - b.x, a.y - b.y, a.z - b.z);
+		return new Point(a.x - b.x, a.y - b.y, a.z - b.z);
 	}
 
-	public Point sub(Point P) {
-		x-=P.x;
-		y-=P.y;
-		z-=P.z;
-		return this;
+	public static Point mult(Point a, float s) {
+		return new Point(a.x*s, a.y*s, a.z*s);
 	}
-	public Point mul(float f) {
-		x*=f;
-		y*=f;
-		z*=f;
-		return this;
+
+	public static Point div(Point a, float s) {
+		return mult(a, 1/s);
 	}
-	public Point mul(float dx, float dy, float dz) {
-		x*=dx;
-		y*=dy;
-		z*=dz;
-		return this;
+
+	//****************
+	// MAGIC METHODS
+	//****************
+
+	public static float dist(Point a, Point b) {
+		return PApplet.dist(a.x,a.y,a.z,b.x,b.y,b.z);
 	}
-	public Point div(float f) {
-		x/=f;
-		y/=f;
-		z/=f;
-		return this;
+
+	public static Point midPoint(Point a, Point b) {
+		return new Point((a.x+b.x)/2,(a.y+b.y)/2, (a.z+b.z)/2);
 	}
-	public Point div(int f) {
-		x/=f;
-		y/=f;
-		z/=f;
-		return this;
+
+	public static Point lerp(Point a, float t, Point b) {
+		Point d = sub(b, a);
+		return add(a, mult(d, t));
 	}
-	public Point snap(float r) {
-		float f=(float) (r/(Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2))));
-		x*=f;
-		y*=f;
-		z*=f;
-		return this;
+
+	public static Point addScaledVector(Point a, Point b, float t) {
+		return add(a, mult(b, t));
 	}
-	// =====  point functions
-			public static Point P(){
-		// point 0,0,0
-		return new Point();
+
+	public static Point rotateVector90(Point v) {
+		return new Point(-v.y, v.x);
 	}
-	public static Point P(float x, float y, float z){
-		// point (x,y,z)
-		return new Point(x,y,z);
+
+
+	public static Point rotateVector(Point v, float angle) {
+		float c=(float) Math.cos(angle), s=(float) Math.sin(angle);
+		return(new Point(v.x*c-v.y*s,v.x*s+v.y*c));
 	}
-	public static Point P(Point A) {
-		// copy of point P
-		return new Point(A.x,A.y,A.z);
+
+	public static float dot(Point u, Point v) {
+		return u.x*v.x + u.y*v.y + u.z*v.z;
 	}
-	public static Point lerp(Point A, float s, Point B) {
-		// A+sAB
-	    float newX = A.x+s*(B.x-A.x);
-	    float newY = A.y+s*(B.y-A.y);
-	    float newZ = A.z+s*(B.z-A.z);
-		return new Point(newX,newY,newZ);
+
+	public static float cross2D(Point u, Point v) {
+		return dot(u,rotateVector90(v));
 	}
-	public static Point P(Point A, Point B) {
-		// (A+B)/2
-		float newX = (float) ((A.x+B.x)/2.0);
-		float newY = (float) ((A.y+B.y)/2.0);
-		float newZ = (float) ((A.z+B.z)/2.0);
-		return P(newX,newY,newZ);
+
+	float angle(Point a, Point b) {
+		return (float) Math.atan2(dot(rotateVector90(a),b),dot(a,b));
 	}
-	public static Point P(Point A, Point B, Point C) {
-		// (A+B+C)/3
-		float newX = (float) ((A.x+B.x+C.x)/3.0);
-		float newY = (float) ((A.y+B.y+C.y)/3.0);
-		float newZ = (float) ((A.z+B.z+C.z)/3.0);
-		return new Point(newX,newY,(newZ));
-	}
-	public static Point P(Point A, Point B, Point C, Point D) {
-		// (A+B+C+D)/4
-		return P(P(A,B),P(C,D));
-	}
-	public static Point P(float s, Point A) {
-		// sA
-		return new Point(s*A.x,s*A.y,s*A.z);
-	}
-	public static Point A(Point A, Point B) {
-		// A+B
-		return new Point(A.x+B.x,A.y+B.y,A.z+B.z);
-	}
-	public static Point P(float a, Point A, float b, Point B) {
-		// aA+bB
-		return A(P(a,A),P(b,B));
-	}
-	public static Point P(float a, Point A, float b, Point B, float c, Point C) {
-		// aA+bB+cC
-		return A(P(a,A),P(b,B,c,C));
-	}
-	public static Point P(float a, Point A, float b, Point B, float c, Point C, float d, Point D){
-		// aA+bB+cC+dD
-		return A(P(a,A,b,B),P(c,C,d,D));
-	}
-	public static Point P(Point P, Vector V) {
-		// P+V
-		return new Point(P.x + V.x, P.y + V.y, P.z + V.z);
-	}
-	public static Point P(Point P, float s, Vector V) {
-		// P+sV
-		return new Point(P.x+s*V.x,P.y+s*V.y,P.z+s*V.z);
-	}
-	public static Point P(Point O, float x, Vector I, float y, Vector J) {
-		// O+xI+yJ
-		return P(O.x+x*I.x+y*J.x,O.y+x*I.y+y*J.y,O.z+x*I.z+y*J.z);
-	}
-	public static Point P(Point O, float x, Vector I, float y, Vector J, float z, Vector K) {
-		// O+xI+yJ+kZ
-		return P(O.x+x*I.x+y*J.x+z*K.x,O.y+x*I.y+y*J.y+z*K.y,O.z+x*I.z+y*J.z+z*K.z);
-	}
-	public static Point R(Point P, float a, Vector I, Vector J, Point G) {
-		// Rotated P by a around G in plane (I,J)
-		float x = d(Vector.V(G,P),I);
-		float y = d(Vector.V(G,P),J);
-		float c = (float) Math.cos(a);
-		float s = (float) Math.sin(a);
-		return P(P,x*c-x-y*s,I,x*s+y*c-y,J);
-	}
-	public static void makePts(Point[] C) { //TODO change return type
-		// fills array C with points initialized to (0,0,0)
-		for(int i=0; i<C.length; i++){
-			C[i]=P();
+
+	public static Point neville(float t, Point ... vectors) {
+		if (vectors.length == 1) return vectors[0];
+		if (vectors.length == 2) {
+			return lerp(vectors[0], t, vectors[1]);
+		} else {
+			int len = vectors.length - 1;
+			Point[] v1 = new Point[len], v2 = new Point[len];
+			System.arraycopy(vectors,0,v1,0,len);
+			System.arraycopy(vectors,1,v2,0,len);
+			return neville(t/(len),neville(t, v1), neville(t-1,v2));
 		}
 	}
 
-	public static Point Predict(Point A, Point B, Point C) {
-		// B+AC, parallelogram predictor
-		return P(B,Vector.V(A,C));
+	public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
+		//s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
+		Point one = Point.lerp(p0, 9.0f/8.0f, p1);
+		Point two = Point.lerp(p3, 9.0f/8.0f, p2);
+		return Point.lerp(one, (float).5, two);
 	}
-	/*public static void v(Pt P) { //TODO figure out what this does
-        // rendering
-        vertex(P.x,P.y,P.z);
-    }*/
-	// ===== measures
-	public static float d(Vector U, Vector V) {
-		//U*V dot product
-		return U.x*V.x+U.y*V.y+U.z*V.z;
+	//	
+	//    public static Point subdivision(PointVector p0, PointVector p1, PointVector p2, PointVector p3){
+	//        float[] p0xyz = p0.getXYZ();
+	//        Point newP0 = new Point(p0xyz[0],p0xyz[1],p0xyz[2]);
+	//
+	//        float[] p1xyz = p1.getXYZ();
+	//        Point newP1 = new Point(p1xyz[0],p1xyz[1],p1xyz[2]);
+	//
+	//        float[] p2xyz = p2.getXYZ();
+	//        Point newP2 = new Point(p2xyz[0],p2xyz[1],p2xyz[2]);
+	//
+	//        float[] p3xyz = p3.getXYZ();
+	//        Point newP3 = new Point(p3xyz[0],p3xyz[1],p3xyz[2]);
+	//        return subdivision(newP0,newP1,newP2,newP3);
+	//
+	//    }
+	//
+	//	public Point (float px, float py, float pz) {
+	//		x = px;
+	//		y = py;
+	//		z = pz;
+	//	}
+	//
+	//	public Point add(Point P) {
+	//		x+=P.x;
+	//		y+=P.y;
+	//		z+=P.z;
+	//		return this;
+	//	}
+	//	public Point add(Vector V) {
+	//		x+=V.x;
+	//		y+=V.y;
+	//		z+=V.z;
+	//		return this;
+	//	}
+	//	public Point add(float s, Vector V) {
+	//		x+=s*V.x;
+	//		y+=s*V.y;
+	//		z+=s*V.z;
+	//		return this;
+	//	}
+	//	public Point add(float dx, float dy, float dz) {
+	//		x+=dx;
+	//		y+=dy;
+	//		z+=dz;
+	//		return this;
+	//	}
+	//
+	//	public static Point sub(Point a, Point b) {
+	//	    return new Point(a.x - b.x, a.y - b.y, a.z - b.z);
+	//	}
+	//
+	//	public Point sub(Point P) {
+	//		x-=P.x;
+	//		y-=P.y;
+	//		z-=P.z;
+	//		return this;
+	//	}
+	//	public Point mul(float f) {
+	//		x*=f;
+	//		y*=f;
+	//		z*=f;
+	//		return this;
+	//	}
+	//	public Point mul(float dx, float dy, float dz) {
+	//		x*=dx;
+	//		y*=dy;
+	//		z*=dz;
+	//		return this;
+	//	}
+	//	public Point div(float f) {
+	//		x/=f;
+	//		y/=f;
+	//		z/=f;
+	//		return this;
+	//	}
+	//	public Point div(int f) {
+	//		x/=f;
+	//		y/=f;
+	//		z/=f;
+	//		return this;
+	//	}
+	//	public Point snap(float r) {
+	//		float f=(float) (r/(Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2))));
+	//		x*=f;
+	//		y*=f;
+	//		z*=f;
+	//		return this;
+	//	}
+	//	// =====  point functions
+	//			public static Point P(){
+	//		// point 0,0,0
+	//		return new Point();
+	//	}
+	//	public static Point P(float x, float y, float z){
+	//		// point (x,y,z)
+	//		return new Point(x,y,z);
+	//	}
+	//	public static Point P(Point A) {
+	//		// copy of point P
+	//		return new Point(A.x,A.y,A.z);
+	//	}
+	//	public static Point lerp(Point A, float s, Point B) {
+	//		// A+sAB
+	//	    float newX = A.x+s*(B.x-A.x);
+	//	    float newY = A.y+s*(B.y-A.y);
+	//	    float newZ = A.z+s*(B.z-A.z);
+	//		return new Point(newX,newY,newZ);
+	//	}
+	//	public static Point P(Point A, Point B) {
+	//		// (A+B)/2
+	//		float newX = (float) ((A.x+B.x)/2.0);
+	//		float newY = (float) ((A.y+B.y)/2.0);
+	//		float newZ = (float) ((A.z+B.z)/2.0);
+	//		return P(newX,newY,newZ);
+	//	}
+	//	public static Point P(Point A, Point B, Point C) {
+	//		// (A+B+C)/3
+	//		float newX = (float) ((A.x+B.x+C.x)/3.0);
+	//		float newY = (float) ((A.y+B.y+C.y)/3.0);
+	//		float newZ = (float) ((A.z+B.z+C.z)/3.0);
+	//		return new Point(newX,newY,(newZ));
+	//	}
+	//	public static Point P(Point A, Point B, Point C, Point D) {
+	//		// (A+B+C+D)/4
+	//		return P(P(A,B),P(C,D));
+	//	}
+	//	public static Point P(float s, Point A) {
+	//		// sA
+	//		return new Point(s*A.x,s*A.y,s*A.z);
+	//	}
+	//	public static Point A(Point A, Point B) {
+	//		// A+B
+	//		return new Point(A.x+B.x,A.y+B.y,A.z+B.z);
+	//	}
+	//	public static Point P(float a, Point A, float b, Point B) {
+	//		// aA+bB
+	//		return A(P(a,A),P(b,B));
+	//	}
+	//	public static Point P(float a, Point A, float b, Point B, float c, Point C) {
+	//		// aA+bB+cC
+	//		return A(P(a,A),P(b,B,c,C));
+	//	}
+	//	public static Point P(float a, Point A, float b, Point B, float c, Point C, float d, Point D){
+	//		// aA+bB+cC+dD
+	//		return A(P(a,A,b,B),P(c,C,d,D));
+	//	}
+	//	public static Point P(Point P, Vector V) {
+	//		// P+V
+	//		return new Point(P.x + V.x, P.y + V.y, P.z + V.z);
+	//	}
+	//	public static Point P(Point P, float s, Vector V) {
+	//		// P+sV
+	//		return new Point(P.x+s*V.x,P.y+s*V.y,P.z+s*V.z);
+	//	}
+	//	public static Point P(Point O, float x, Vector I, float y, Vector J) {
+	//		// O+xI+yJ
+	//		return P(O.x+x*I.x+y*J.x,O.y+x*I.y+y*J.y,O.z+x*I.z+y*J.z);
+	//	}
+	//	public static Point P(Point O, float x, Vector I, float y, Vector J, float z, Vector K) {
+	//		// O+xI+yJ+kZ
+	//		return P(O.x+x*I.x+y*J.x+z*K.x,O.y+x*I.y+y*J.y+z*K.y,O.z+x*I.z+y*J.z+z*K.z);
+	//	}
+	//	public static Point R(Point P, float a, Vector I, Vector J, Point G) {
+	//		// Rotated P by a around G in plane (I,J)
+	//		float x = d(Vector.V(G,P),I);
+	//		float y = d(Vector.V(G,P),J);
+	//		float c = (float) Math.cos(a);
+	//		float s = (float) Math.sin(a);
+	//		return P(P,x*c-x-y*s,I,x*s+y*c-y,J);
+	//	}
+	//	public static void makePts(Point[] C) { //TODO change return type
+	//		// fills array C with points initialized to (0,0,0)
+	//		for(int i=0; i<C.length; i++){
+	//			C[i]=P();
+	//		}
+	//	}
+	//
+	//	public static Point Predict(Point A, Point B, Point C) {
+	//		// B+AC, parallelogram predictor
+	//		return P(B,Vector.V(A,C));
+	//	}
+	//	/*public static void v(Pt P) { //TODO figure out what this does
+	//        // rendering
+	//        vertex(P.x,P.y,P.z);
+	//    }*/
+	//	// ===== measures
+	//	public static float d(Vector U, Vector V) {
+	//		//U*V dot product
+	//		return U.x*V.x+U.y*V.y+U.z*V.z;
+	//	}
+	//	public static float d(Point P, Point Q) {
+	//		// ||AB|| distance
+	//		return (float) Math.sqrt(Math.pow(Q.x-P.x,2)+Math.pow(Q.y-P.y,2)+Math.pow(Q.z-P.z,2));
+	//	}
+	//	public static float d2(Point P, Point Q) {
+	//		// AB^2 distance squared
+	//		return (float) (Math.pow(Q.x-P.x,2)+Math.pow(Q.y-P.y,2)+Math.pow(Q.z-P.z,2));
+	//	}
+	//	public static float m(Vector U, Vector V, Vector W) {
+	//		// (UxV)*W  mixed product, determinant
+	//		return d(U,Vector.N(V,W));
+	//	}
+	//	public static float m(Point E, Point A, Point B, Point C) {
+	//		// det (EA EB EC) is >0 when E sees (A,B,C) clockwise
+	//		return m(Vector.V(E,A),Vector.V(E,B),Vector.V(E,C));
+	//	}
+	//	public static float n2(Vector V) {
+	//		// V*V    norm squared
+	//		return (float) (Math.pow(V.x,2)+Math.pow(V.y,2)+Math.pow(V.z,2));
+	//	}
+	//	public static float n(Vector V) {
+	//		// ||V||  norm
+	//		return (float) Math.pow(n2(V), .5);
+	//	}
+	//	public static float area(Point A, Point B, Point C) {
+	//		// area of triangle
+	//		return n(Vector.N(A,B,C))/2;
+	//	}
+	//	public static float volume(Point A, Point B, Point C, Point D) {
+	//		// volume of tet
+	//		return m(Vector.V(A,B),Vector.V(A,C),Vector.V(A,D))/6;
+	//	}
+	//	public static boolean parallel (Vector U, Vector V) {
+	//		// true if U and V are almost parallel
+	//		return n(Vector.N(U,V))<n(U)*n(V)*0.00001;
+	//	}
+	//	public static float angle(Vector U, Vector V) {
+	//		// angle(U,V)
+	//		return (float) Math.acos(d(U,V)/n(V)/n(U));
+	//	}
+	//	public static boolean cw(Vector U, Vector V, Vector W) {
+	//		// (UxV)*W>0  U,V,W are clockwise
+	//		return m(U,V,W)>=0;
+	//	}
+	//	public static boolean cw(Point A, Point B, Point C, Point D) {
+	//		// tet is oriented so that A sees B, C, D clockwise
+	//		return volume(A,B,C,D)>=0;
+	//	}
+	
+	public String toString() {
+		return String.format("(%.2f,%.2f,%.2f)", x,y,z);
 	}
-	public static float d(Point P, Point Q) {
-		// ||AB|| distance
-		return (float) Math.sqrt(Math.pow(Q.x-P.x,2)+Math.pow(Q.y-P.y,2)+Math.pow(Q.z-P.z,2));
-	}
-	public static float d2(Point P, Point Q) {
-		// AB^2 distance squared
-		return (float) (Math.pow(Q.x-P.x,2)+Math.pow(Q.y-P.y,2)+Math.pow(Q.z-P.z,2));
-	}
-	public static float m(Vector U, Vector V, Vector W) {
-		// (UxV)*W  mixed product, determinant
-		return d(U,Vector.N(V,W));
-	}
-	public static float m(Point E, Point A, Point B, Point C) {
-		// det (EA EB EC) is >0 when E sees (A,B,C) clockwise
-		return m(Vector.V(E,A),Vector.V(E,B),Vector.V(E,C));
-	}
-	public static float n2(Vector V) {
-		// V*V    norm squared
-		return (float) (Math.pow(V.x,2)+Math.pow(V.y,2)+Math.pow(V.z,2));
-	}
-	public static float n(Vector V) {
-		// ||V||  norm
-		return (float) Math.pow(n2(V), .5);
-	}
-	public static float area(Point A, Point B, Point C) {
-		// area of triangle
-		return n(Vector.N(A,B,C))/2;
-	}
-	public static float volume(Point A, Point B, Point C, Point D) {
-		// volume of tet
-		return m(Vector.V(A,B),Vector.V(A,C),Vector.V(A,D))/6;
-	}
-	public static boolean parallel (Vector U, Vector V) {
-		// true if U and V are almost parallel
-		return n(Vector.N(U,V))<n(U)*n(V)*0.00001;
-	}
-	public static float angle(Vector U, Vector V) {
-		// angle(U,V)
-		return (float) Math.acos(d(U,V)/n(V)/n(U));
-	}
-	public static boolean cw(Vector U, Vector V, Vector W) {
-		// (UxV)*W>0  U,V,W are clockwise
-		return m(U,V,W)>=0;
-	}
-	public static boolean cw(Point A, Point B, Point C, Point D) {
-		// tet is oriented so that A sees B, C, D clockwise
-		return volume(A,B,C,D)>=0;
-	}
+	
 }
 
 /*

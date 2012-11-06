@@ -5,19 +5,19 @@ public class Nub implements Widget, MouseMotionListener {
 
 	final static int DEFAULT_RADIUS = 10;
 
-	PointVector pos;
+	Point pos;
 	int radius;
 
 	int circle_color = 0xFF3C6BDE;
 	int text_color = 0x38ffffff;
 
-	Nub(PointVector p) {
+	Nub(Point p) {
 		pos = p;
 		radius = DEFAULT_RADIUS;
 	}
 
 	Nub(int x, int y) {
-		this(new PointVector(x, y));
+		this(new Point(x, y));
 	}
 
 	public boolean over(float x, float y) {
