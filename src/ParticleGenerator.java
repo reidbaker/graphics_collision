@@ -20,7 +20,7 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		pos = p;
 		radius = r;
 		curve = c;
-        w = new World((float)200, (float)200, (float)0);
+        w = new World((float)-100, (float)-100, (float)-100);
         particles.add(w);
 	}
 
