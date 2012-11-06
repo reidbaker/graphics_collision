@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
@@ -7,9 +9,13 @@ import processing.opengl.PGraphicsOpenGL;
 
 public class GraphicsCollision extends PApplet {
 
-	private PGraphicsOpenGL pgl;
-	private GLU glu;
-	private GL gl;
+	private static GraphicsCollision instance;
+	public PGraphicsOpenGL pgl;
+	public GLU glu;
+	public GL gl;
+	
+	final String TITLE = "COLLISION SIMULATOR";
+
 
 	//Colors
 	public final int RED = color(250,0,0);
@@ -42,7 +48,11 @@ public class GraphicsCollision extends PApplet {
 	}
 
 	boolean isSetup;
+	private CollisionSimulation simulation;
+	private ArrayList<Widget> widgets = new ArrayList<Widget>();
 	public void setup() {
+		
+		instance = this;
 
 		if (!isSetup) {
 			size(900, 800, OPENGL);
@@ -56,87 +66,75 @@ public class GraphicsCollision extends PApplet {
 
 			isSetup = true;
 			
-			
 			// load the fonts for our interface
 //			interfaceFont = loadFont("Roboto-Bold-13.vlw");
 //			textFont(interfaceFont, 13);
-//
-//			Window mainWindow = new Window("SIMULATION", 10, 40, 600, 400);
-//			strokeSim = new CollisionSimulation(mainWindow, 7, 7);
-//
-//			widgets.add(mainWindow);
-//			widgets.add(new PictureWindow("profile.jpg", 630, 40));
-//
-//
-//			Button smoothen = new Button(630, 200, 120, 40, "SMOOTH (S)");
-//			smoothen.addOnClickListener(new WidgetListener() {
-//				public void action() {
-//					strokeSim.smoothCurrentStroke();
-//				}
-//			}
-//					);
-//
-//			Button subdivide = new Button(760, 200, 120, 40, "SUBDIVIDE (D)");
-//			subdivide.addOnClickListener(new WidgetListener() {
-//				public void action() {
-//					strokeSim.subdivideCurrentStroke();
-//				}
-//			}
-//					);
-//
-//
-//			Button resetCurve = new Button(630, 350, 250, 40, "RESET STROKES (R)");
-//			resetCurve.addOnClickListener(new WidgetListener() {
-//				public void action() {
-//					strokeSim.resetCurrentStroke();
-//				}
-//			});
-//
-//
-//
-//			widgets.add(smoothen);
-//			widgets.add(subdivide);
-//			widgets.add(resetCurve);
-//
-//			// set the framerate to be convenient
-//			frameRate(32);
-//
-//			PointVector p = new PointVector(31,4);
-//			println(vSub(p,new PointVector(4,3)));
-//			println(PVector.sub(new PVector(31,4),new PVector(4,3)));
+
+			simulation = new CollisionSimulation(this, 7, 7);
+
+			widgets.add(simulation);
+			// widgets.add(new PictureWindow("profile.jpg", 630, 40));
+
+
+			Button smoothen = new Button(630, 200, 120, 40, "SMOOTH (S)");
+			smoothen.addOnClickListener(new WidgetListener() {
+				public void action() {
+					simulation.smoothCurrentStroke();
+				}
+			}
+					);
+
+			Button subdivide = new Button(760, 200, 120, 40, "SUBDIVIDE (D)");
+			subdivide.addOnClickListener(new WidgetListener() {
+				public void action() {
+					simulation.subdivideCurrentStroke();
+				}
+			}
+					);
+
+
+			Button resetCurve = new Button(630, 350, 250, 40, "RESET STROKES (R)");
+			resetCurve.addOnClickListener(new WidgetListener() {
+				public void action() {
+					simulation.resetCurrentStroke();
+				}
+			});
+
+
+
+			widgets.add(smoothen);
+			widgets.add(subdivide);
+			widgets.add(resetCurve);
+
+			// set the framerate to be convenient
+			frameRate(32);
+
 		}
 	}
 
 	public void draw() {
 		line(40,40,mouseX,mouseY);
 		drawBackground();
-//
-//		for (Widget widget: widgets) {
-//			widget.draw();
-//		}
-//
-//		drawTopBar();
-//
-//
-//		if (DEBUG) {
-//			text(String.format("%d, %d", mouseX, mouseY), width - 50, height - 50);
-//		}
+
+		for (Widget widget: widgets) {
+			widget.draw(this);
+		}
+
+		drawTopBar();
+
 	}
-
-
 
 	/**
 	 * Draws the top information panel.
 	 */
 	void drawTopBar() {
-//		noStroke();
-//		fill(#131D45);
-//		rect(0, 0, width, 30);
-//		textAlign(LEFT, TOP);
-//		textSize(13);
-//		fill(255,200);
-//		text(TITLE, 10, 5);
-		// text("MATRIX SIZE: " + size, width/1.18, 10);
+		noStroke();
+		fill(0xFF131D45);
+		rect(0, 0, width, 30);
+		textAlign(LEFT, TOP);
+		textSize(13);
+		fill(255,200);
+		text(TITLE, 10, 5);
 	}
 
 	/*
@@ -187,5 +185,95 @@ public class GraphicsCollision extends PApplet {
 	    return Vec.V((float)mouseX-pmouseX,(float)mouseY-pmouseY,0f);
 	}*/
 	
+	public static GraphicsCollision getInstance() {
+		return instance;
+	}
+	
+	
+	/**
+	 * Let's set up some key controls, eh?
+	 */
+	public void keyPressed() {
+
+	  switch(key) {
+	  case '1':
+	    simulation.setCurrentStroke(0);
+	    break;
+	  case '2':
+	    simulation.setCurrentStroke(1);
+	    break;
+	  case '3':
+	    simulation.setCurrentStroke(2);
+	    break;
+	  case '4':
+	    simulation.setCurrentStroke(3);
+	    break;
+	  case 's': case 'S':
+	    simulation.smoothCurrentStroke();
+	    break;
+	  case 'd': case 'D':
+	    simulation.subdivideCurrentStroke();
+	    break;
+	   case 'r': case 'R':
+	    simulation.resetCurrentStroke();
+	    break;
+	   case ' ':
+	     simulation.nextStroke();
+	     break;
+	  }
+
+	  if (keyCode == DOWN || key == '[') {
+	  }
+	}
+
+	public void keyReleased() {
+	  switch(key) {
+	    case 'z': case 'Z':
+	      // zDown = false;
+	      break;
+	  }
+	}
+
+	/**
+	 * What happens when we move the mouse.
+	 */
+	public void mouseMoved() {
+
+	  // check to see if we're over a widget,
+	  // and if we are, update that widget
+	  for (int i = 0; i < widgets.size(); i++) {
+	    Widget widget = (Widget)widgets.get(i);
+	    if (widget.over(mouseX, mouseY)) {
+	      widget.mouseMoved(mouseX, mouseY);
+	    }
+	  }
+	}
+
+	public void mouseDragged() {
+	  // check to see if we're over a widget,
+	  // and if we are, update that widget
+	  for (int i = 0; i < widgets.size(); i++) {
+	    Widget widget = (Widget)widgets.get(i);
+	    if (widget.over(mouseX, mouseY)) {
+	      // widget.onHover();
+	      widget.mouseMoved(mouseX, mouseY);
+	    }
+	  }
+	}
+
+	/**
+	 * What happens when we click the mouse.
+	 */
+	public void mousePressed() {
+	  
+	    // are we clicking on a widget?
+	    for (int i = 0; i < widgets.size(); i++) {
+	      Widget widget = (Widget)widgets.get(i);
+	      if (widget.over(mouseX,mouseY)) {
+	        widget.onClick();
+	        widget.mouseClicked(mouseX,mouseY);
+	      }
+	    }
+	}
 
 }

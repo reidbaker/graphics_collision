@@ -12,9 +12,7 @@ public class Point {
 		z = pz;
 	}
 
-	public static Point midPoint(Point a, Point b) {
-		return new Point((a.x+b.x)/2,(a.y+b.y)/2, (a.z+b.z)/2);
-	}
+	
 
 	public Point add(Point P) {
 		x+=P.x;
