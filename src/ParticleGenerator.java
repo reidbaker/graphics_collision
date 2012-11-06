@@ -65,8 +65,9 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		    }
 		    
 		    // update
-            p.velocity = Point.add(p.velocity, Particle.force(p, w));
+//            p.velocity = Point.add(p.velocity, Particle.force(p, w));
             p.pos.add(p.velocity);
+            p.pos.add(Particle.force(p, w));
 		    p.draw(c);
 		}
 		
