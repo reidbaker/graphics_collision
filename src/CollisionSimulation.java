@@ -28,8 +28,6 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		height = g.height;
 
 		curve = new Curve(0xFFFF0000);
-		
-		
 		Random r = new Random();
 		for (int i = 0; i < 3; i++) {
 			curve.addControlPoint(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
@@ -77,7 +75,10 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			return;
 		}else if(g.key == 'd'){
 	        int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x, y));
-	        curve.controls.remove(closeLoc);
+	        curve.controls.remove(closeLoc); //remove closest point
+	        curve.points.clear(); //clear out old points so that resample will subdivide
+	        curve.points = curve.getNubPositions();
+	        resampleCurrentCurve();
 		}
 	}
 
@@ -100,7 +101,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			    n.draw(c);
 			}
 		}
-		
+
 		//This is the default circle color
 		curve.controls.get(closeLoc).setCircleColor(0xFF3C6BDE);
 //		t += .01;
@@ -122,7 +123,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
         }
 	    return minIndex;
 	}
-	
+
 	@Override
 	public boolean over(float x, float y) {
 		return true;

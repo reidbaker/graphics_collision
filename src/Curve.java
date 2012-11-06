@@ -36,7 +36,9 @@ class Curve {
 	void resample() {
 
 		int size = controls.size()*16;
-		if (points.size() < 1) return;
+		if (points.size() < 1) {
+		    return;
+		}
 
 		while (points.size () < size) {
 			subdivide();
@@ -69,11 +71,11 @@ class Curve {
 				Point p = points.get(i);
 				c.vertex(p.x,p.y,p.z);
 			}
-			
+
 			Point p = points.get(points.size()-1);
 			c.vertex(p.x,p.y,p.z);
 			c.endShape();
-			
+
 			c.fill(stroke_color);
 			for (int i = 0; i < points.size()-1; i++) {
 				p = points.get(i);
@@ -90,7 +92,7 @@ class Curve {
 	}
 
 	public void addControlPoint(Nub nub) {
-		controls.add(nub); 
+		controls.add(nub);
 		recalculate();
 	}
 
@@ -116,5 +118,13 @@ class Curve {
 			}
 		}
 		return closest;
+	}
+
+	public ArrayList<Point> getNubPositions(){
+	    ArrayList<Point> positions = new ArrayList<Point>();
+	    for (int i = 0; i < controls.size(); i++) {
+            positions.add(controls.get(i).pos);
+        }
+	    return positions;
 	}
 }

@@ -13,7 +13,7 @@ public class GraphicsCollision extends PApplet {
 	public PGraphicsOpenGL pgl;
 	public GLU glu;
 	public GL gl;
-	
+
 	final String TITLE = "COLLISION SIMULATOR";
 
 	//Colors
@@ -50,7 +50,7 @@ public class GraphicsCollision extends PApplet {
 	private CollisionSimulation simulation;
 	private ArrayList<Widget> widgets = new ArrayList<Widget>();
 	public void setup() {
-		
+
 		instance = this;
 
 		if (!isSetup) {
@@ -124,7 +124,7 @@ public class GraphicsCollision extends PApplet {
 			y+= gap;
 		}
 	}
-	
+
 	public void mouseReleased(){
 
 	}
@@ -141,19 +141,19 @@ public class GraphicsCollision extends PApplet {
         // vector representing recent mouse displacement
 	    return Vec.V((float)mouseX-pmouseX,(float)mouseY-pmouseY,0f);
 	}*/
-	
+
 	public static GraphicsCollision getInstance() {
 		return instance;
 	}
-	
-	
+
+
 	/**
 	 * Let's set up some key controls, eh?
 	 */
 	public void keyPressed() {
 
 	  switch(key) {
-	  
+
 	  }
 
 	  if (keyCode == DOWN || key == '[') {
