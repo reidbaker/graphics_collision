@@ -32,10 +32,12 @@ public class GraphicsCollision extends PApplet {
 	public final int BLACK = color(0,0,0);
 	public final int GREY = color(100,100,100);
 	public final int METAL = color(150,150,250);
+	public final int BG_COLOR = color(48, 52, 88);
 
 	public static void main(String[] args) {
 		PApplet.main(new String[] { "--present", "GraphicsCollision" });
 	}
+	
 	public void setColors() {
 	}
 
@@ -43,7 +45,7 @@ public class GraphicsCollision extends PApplet {
 	public void setup() {
 
 		if (!isSetup) {
-			size(800, 800, OPENGL);
+			size(900, 800, OPENGL);
 			frameRate(30);
 			sphereDetail(6);
 
@@ -53,16 +55,119 @@ public class GraphicsCollision extends PApplet {
 			pgl.endGL();
 
 			isSetup = true;
+			
+			
+			// load the fonts for our interface
+//			interfaceFont = loadFont("Roboto-Bold-13.vlw");
+//			textFont(interfaceFont, 13);
+//
+//			Window mainWindow = new Window("SIMULATION", 10, 40, 600, 400);
+//			strokeSim = new CollisionSimulation(mainWindow, 7, 7);
+//
+//			widgets.add(mainWindow);
+//			widgets.add(new PictureWindow("profile.jpg", 630, 40));
+//
+//
+//			Button smoothen = new Button(630, 200, 120, 40, "SMOOTH (S)");
+//			smoothen.addOnClickListener(new WidgetListener() {
+//				public void action() {
+//					strokeSim.smoothCurrentStroke();
+//				}
+//			}
+//					);
+//
+//			Button subdivide = new Button(760, 200, 120, 40, "SUBDIVIDE (D)");
+//			subdivide.addOnClickListener(new WidgetListener() {
+//				public void action() {
+//					strokeSim.subdivideCurrentStroke();
+//				}
+//			}
+//					);
+//
+//
+//			Button resetCurve = new Button(630, 350, 250, 40, "RESET STROKES (R)");
+//			resetCurve.addOnClickListener(new WidgetListener() {
+//				public void action() {
+//					strokeSim.resetCurrentStroke();
+//				}
+//			});
+//
+//
+//
+//			widgets.add(smoothen);
+//			widgets.add(subdivide);
+//			widgets.add(resetCurve);
+//
+//			// set the framerate to be convenient
+//			frameRate(32);
+//
+//			PointVector p = new PointVector(31,4);
+//			println(vSub(p,new PointVector(4,3)));
+//			println(PVector.sub(new PVector(31,4),new PVector(4,3)));
 		}
 	}
 
+<<<<<<< Updated upstream
 	public void draw(){
 		//pgl.beginDraw();
 		//pgl.background(102);
 		//pgl.stroke(255);
 		//pgl.line(40, 40, mouseX, mouseY);
+=======
+	public void draw() {
+>>>>>>> Stashed changes
 		line(40,40,mouseX,mouseY);
-		// pgl.endDraw();
+
+		drawBackground();
+//
+//		for (Widget widget: widgets) {
+//			widget.draw();
+//		}
+//
+//		drawTopBar();
+//
+//
+//		if (DEBUG) {
+//			text(String.format("%d, %d", mouseX, mouseY), width - 50, height - 50);
+//		}
+	}
+
+
+
+	/**
+	 * Draws the top information panel.
+	 */
+	void drawTopBar() {
+//		noStroke();
+//		fill(#131D45);
+//		rect(0, 0, width, 30);
+//		textAlign(LEFT, TOP);
+//		textSize(13);
+//		fill(255,200);
+//		text(TITLE, 10, 5);
+		// text("MATRIX SIZE: " + size, width/1.18, 10);
+	}
+
+	/*
+	 * Draws the background grid.
+	 */
+	void drawBackground() {
+		background(BG_COLOR);
+		stroke(42,58,146,40);
+		strokeWeight(2);
+
+		int gap = 20;
+		int x = 0;
+		int y = 0;
+
+		while (x < width) {
+			line(x, 0, x, height);
+			x += gap;
+		}
+		while (y< height) {
+			line(0, y, width, y);
+			y+= gap;
+		}
 	}
 
 
@@ -79,12 +184,12 @@ public class GraphicsCollision extends PApplet {
 	}
 
 	// ===== Mouse Tools from jarak's PV file
-	public Pt Mouse(){
+	public Point Mouse(){
 		// current mouse location
-		return Pt.P(mouseX,mouseY,0);
+		return Point.P(mouseX,mouseY,0);
 	}
-	public Pt Pmouse(){
-		return Pt.P(pmouseX,pmouseY,0);
+	public Point Pmouse(){
+		return Point.P(pmouseX,pmouseY,0);
 	}
 	/*public Vec MouseDrag(){
         // vector representing recent mouse displacement
