@@ -70,6 +70,7 @@ class Curve {
 				Point p = points.get(i);
 				c.vertex(p.x,p.y,p.z);
 			}
+			
 			Point p = points.get(points.size()-1);
 			c.vertex(p.x,p.y,p.z);
 			c.endShape();
@@ -82,7 +83,6 @@ class Curve {
 				c.sphere(10);
 				c.popMatrix();
 			}
-			
 		}
 	}
 

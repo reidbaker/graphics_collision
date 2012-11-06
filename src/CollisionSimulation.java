@@ -150,7 +150,6 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 		for (Curve s: strokes) {
 			s.draw(c);
-			// s.drawTranslation(constraints[0].pos, constraints[1].pos);
 		}
 
 		for (Particle p: particles) {
@@ -164,6 +163,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			    n.draw(c);
 			}
 		}
+		
 		//This is the default circle color
 		control_points.get(closeLoc).setCircleColor(0xFF3C6BDE);
 		t += .01;

@@ -197,9 +197,6 @@ public class GraphicsCollision extends PApplet {
 	  case 's': case 'S':
 	    simulation.smoothCurrentStroke();
 	    break;
-	  case 'd': case 'D':
-	    simulation.subdivideCurrentStroke();
-	    break;
 	   case 'r': case 'R':
 	    simulation.resetCurrentStroke();
 	    break;

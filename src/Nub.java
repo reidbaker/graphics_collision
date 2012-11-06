@@ -54,8 +54,7 @@ public class Nub implements Widget, MouseMotionListener {
 		c.noStroke();
 		c.fill(circle_color);
 		c.strokeWeight(3);
-		c.ellipse(0, 0, radius, radius);
-
+		c.sphere(radius);
 
 		c.popMatrix();
 	}
