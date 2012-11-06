@@ -95,7 +95,7 @@ public class Geometry3D {
 		applet.gl.glReadPixels((int)x, (int)y, 1, 1, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, fb);
 		fb.rewind(); // reset the buffer position
 
-		applet.glu.gluUnProject (x, y, (double)fb.get(0), model, 0, projection, 0, viewport, 0, mousePos, 0);
+		applet.glu.gluUnProject (x, y, .8, model, 0, projection, 0, viewport, 0, mousePos, 0);
 
 		((PGraphicsOpenGL)applet.g).endGL(); // we're done!
 

@@ -17,7 +17,7 @@ public class Nub implements Widget, MouseMotionListener {
 		circle_color = 0xFF3C6BDE;
 	}
 
-	Nub(int x, int y) {
+	Nub(float x, float y) {
 		this(new Point(x, y));
         circle_color = 0xFF3C6BDE;
 	}

@@ -68,7 +68,7 @@ public class GraphicsCollision extends PApplet {
 //			interfaceFont = loadFont("Roboto-Bold-13.vlw");
 //			textFont(interfaceFont, 13);
 
-			simulation = new CollisionSimulation(this, 7, 7);
+			simulation = new CollisionSimulation(this, 7);
 
 			widgets.add(simulation);
 			// widgets.add(new PictureWindow("profile.jpg", 630, 40));

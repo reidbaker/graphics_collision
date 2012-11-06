@@ -12,7 +12,7 @@ public class Point {
 	}
 
 	public Point(float x, float y){
-		this(0,0,0);
+		this(x,y,0);
 	}
 
 	Point(float x, float y, float z) {
