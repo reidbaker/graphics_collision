@@ -94,8 +94,5 @@ public class Particle implements Widget, MouseMotionListener {
 			c.stroke(sphere_color,50);
 			c.line(pos.x,pos.y,pos.z,closest.x,closest.y,closest.z);
 		}
-
-		// update
-		pos.add(velocity);
 	}
 }
