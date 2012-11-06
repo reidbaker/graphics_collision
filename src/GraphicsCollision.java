@@ -37,7 +37,7 @@ public class GraphicsCollision extends PApplet {
 	public static void main(String[] args) {
 		PApplet.main(new String[] { "--present", "GraphicsCollision" });
 	}
-	
+
 	public void setColors() {
 	}
 
@@ -55,8 +55,8 @@ public class GraphicsCollision extends PApplet {
 			pgl.endGL();
 
 			isSetup = true;
-			
-			
+
+
 			// load the fonts for our interface
 //			interfaceFont = loadFont("Roboto-Bold-13.vlw");
 //			textFont(interfaceFont, 13);
@@ -107,17 +107,8 @@ public class GraphicsCollision extends PApplet {
 		}
 	}
 
-<<<<<<< Updated upstream
-	public void draw(){
-		//pgl.beginDraw();
-		//pgl.background(102);
-		//pgl.stroke(255);
-		//pgl.line(40, 40, mouseX, mouseY);
-=======
 	public void draw() {
->>>>>>> Stashed changes
 		line(40,40,mouseX,mouseY);
-
 		drawBackground();
 //
 //		for (Widget widget: widgets) {
@@ -195,5 +186,6 @@ public class GraphicsCollision extends PApplet {
         // vector representing recent mouse displacement
 	    return Vec.V((float)mouseX-pmouseX,(float)mouseY-pmouseY,0f);
 	}*/
+
 
 }

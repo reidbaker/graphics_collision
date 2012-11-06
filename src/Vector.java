@@ -1,53 +1,48 @@
 // ===== vector class
-class Vec {
+class Vector {
     float x;
     float y;
     float z;
 
-    public Vec () {
+    public Vector () {
         x = 0;
         y = 0;
         z = 0;
     }
-    public Vec(float px, float py, float pz) {
+    public Vector(float px, float py, float pz) {
         x = px; y = py; z = pz;
     }
-    public Vec set(float px, float py, float pz) {
+    public Vector set(float px, float py, float pz) {
         x = px; y = py; z = pz; return this;
     }
-    public Vec set (Vec V) {
+    public Vector set (Vector V) {
         x = V.x; y = V.y; z = V.z; return this;
     }
-    public Vec add(Vec V) {
+    public Vector add(Vector V) {
         x+=V.x; y+=V.y; z+=V.z; return this;
         }
-    public Vec add(float s, Vec V) {
+    public Vector add(float s, Vector V) {
         x+=s*V.x; y+=s*V.y; z+=s*V.z; return this;
     }
-    public Vec sub(Vec V) {
+    public Vector sub(Vector V) {
         x-=V.x; y-=V.y; z-=V.z; return this;
     }
-
-    public static Vector sub(Point a, Point b) {
-	    return new Vector(a.x - b.x, a.y - b.y, a.z - b.z);
-	}
-
-    public Vec mul(float f) {
+    public Vector mul(float f) {
         x*=f; y*=f; z*=f; return this;
     }
-    public Vec div(float f) {
+    public Vector div(float f) {
         x/=f; y/=f; z/=f; return this;
     }
-    public Vec div(int f) {
+    public Vector div(int f) {
         x/=f; y/=f; z/=f; return this;
     }
-    public Vec rev() {
+    public Vector rev() {
         x=-x; y=-y; z=-z; return this;
     }
     public float norm() {
         return (float) (Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2)));
     }
-    public Vec normalize() {
+    public Vector normalize() {
         float n=norm();
         if (n>0.000001) {
             div(n);
@@ -66,93 +61,93 @@ class Vec {
     }*/
 
     //Vector functions
-    public static Vec V(Vec V) {
+    public static Vector V(Vector V) {
      // make copy of vector V
-        return new Vec(V.x,V.y,V.z);
+        return new Vector(V.x,V.y,V.z);
     }
 
-    public static Vec A(Vec A, Vec B) {
+    public static Vector A(Vector A, Vector B) {
         // A+B
-        return new Vec(A.x+B.x,A.y+B.y,A.z+B.z);
+        return new Vector(A.x+B.x,A.y+B.y,A.z+B.z);
     }
-    public static Vec A(Vec U, float s, Vec V) {
+    public static Vector A(Vector U, float s, Vector V) {
         // U+sV
-        return new Vec(U.x+s*V.x,U.y+s*V.y,U.z+s*V.z);
+        return new Vector(U.x+s*V.x,U.y+s*V.y,U.z+s*V.z);
     }
-    public static Vec M(Vec U, Vec V) {
+    public static Vector M(Vector U, Vector V) {
         // U-V
-        return new Vec(U.x-V.x,U.y-V.y,U.z-V.z);
+        return new Vector(U.x-V.x,U.y-V.y,U.z-V.z);
     }
-    public static Vec M(Vec V) {
+    public static Vector M(Vector V) {
         // -V
-        return new Vec(-V.x,-V.y,-V.z);
+        return new Vector(-V.x,-V.y,-V.z);
     }
-    public static Vec V(Vec A, Vec B) {
+    public static Vector V(Vector A, Vector B) {
         // (A+B)/2
         float newX = (float) ((A.x+B.x)/2.0);
         float newY = (float) ((A.y+B.y)/2.0);
         float newZ = (float) ((A.z+B.z)/2.0);
-        return new Vec(newX,newY,newZ);
+        return new Vector(newX,newY,newZ);
     }
-    public static Vec V(Vec A, float s, Vec B) {
+    public static Vector V(Vector A, float s, Vector B) {
      // (1-s)A+sB
-        return new Vec(A.x+s*(B.x-A.x),A.y+s*(B.y-A.y),A.z+s*(B.z-A.z));
+        return new Vector(A.x+s*(B.x-A.x),A.y+s*(B.y-A.y),A.z+s*(B.z-A.z));
     }
-    public static Vec V(Vec A, Vec B, Vec C) {
+    public static Vector V(Vector A, Vector B, Vector C) {
         // (A+B+C)/3
         float newX = (float) ((A.x+B.x+C.x)/3.0);
         float newY = (float) ((A.y+B.y+C.y)/3.0);
         float newZ = (float) ((A.z+B.z+C.z)/3.0);
-        return new Vec(newX,newY,newZ);
+        return new Vector(newX,newY,newZ);
     }
-    public static Vec V(Vec A, Vec B, Vec C, Vec D) {
+    public static Vector V(Vector A, Vector B, Vector C, Vector D) {
         // (A+B+C+D)/4
         return V(V(A,B),V(C,D));
     }
-    public static Vec V(float s, Vec A) {
+    public static Vector V(float s, Vector A) {
         // sA
-        return new Vec(s*A.x,s*A.y,s*A.z);
+        return new Vector(s*A.x,s*A.y,s*A.z);
     }
-    public static Vec V(float a, Vec A, float b, Vec B) {
+    public static Vector V(float a, Vector A, float b, Vector B) {
         // aA+bB
         return A(V(a,A),V(b,B));
     }
-    public static Vec V(float a, Vec A, float b, Vec B, float c, Vec C) {
+    public static Vector V(float a, Vector A, float b, Vector B, float c, Vector C) {
         // aA+bB+cC
         return A(V(a,A,b,B),V(c,C));
     }
-    public static Vec V(Point P, Point Q) {
+    public static Vector V(Point P, Point Q) {
         // PQ
-        return new Vec(Q.x-P.x,Q.y-P.y,Q.z-P.z);
+        return new Vector(Q.x-P.x,Q.y-P.y,Q.z-P.z);
     }
-    public static Vec U(Vec V) {
+    public static Vector U(Vector V) {
         // V/||V||
         float n = V.norm();
         if (n<0.000001){
-            return new Vec(0, 0, 0);
+            return new Vector(0, 0, 0);
         }else{
             return V((float)(1./n),V);
         }
     }
     /*public static Vec U(pt A, pt B) {
-        //TODO implement Pt
+        //TODO implement point
         return U(V(A,B));
     }*/
-    public static Vec N(Vec U, Vec V) {
+    public static Vector N(Vector U, Vector V) {
         // UxV CROSS PRODUCT (normal to both)
-        return new Vec( U.y*V.z-U.z*V.y, U.z*V.x-U.x*V.z, U.x*V.y-U.y*V.x);
+        return new Vector( U.y*V.z-U.z*V.y, U.z*V.x-U.x*V.z, U.x*V.y-U.y*V.x);
     }
-    public static Vec N(Point A, Point B, Point C) {
+    public static Vector N(Point A, Point B, Point C) {
         // normal to triangle (A,B,C), not normalized (proportional to area)
         return N(V(A,B),V(A,C));
     }
-    Vec B(Vec U, Vec V) {
+    Vector B(Vector U, Vector V) {
         // (UxV)xV unit normal to U in the plane UV
         return U(N(N(U,V),U));
     }
-    Vec R(Vec V) {
+    Vector R(Vector V) {
         // rotated 90 degrees in XY plane
-        return new Vec(-V.y,V.x,V.z);
+        return new Vector(-V.y,V.x,V.z);
     }
     /*Vec R(Vec V, float a, Vec I, Vec J) {
      // Rotated V by a parallel to plane (I,J)
