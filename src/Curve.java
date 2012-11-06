@@ -45,7 +45,6 @@ class Curve {
 
 	private void smooth(float s) {
 		Point[] avg = new Point[points.size()];
-		//    LinkedList<Point> avg = new LinkedList<Point>();
 
 		for (int i = 1; i < points.size()-1; i++) {
 			Point mid = Point.midPoint(points.get(i-1), points.get(i+1));
