@@ -2,19 +2,21 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 
-public class World{
+public class World extends Particle{
     PImage worldPNG;
     float x;
     float y;
     float z;
-    World(PApplet c, float x, float y, float z) {
-        worldPNG = c.loadImage("../map.png");
+
+    World(float x, float y, float z) {
+        super(null, x, y, z);
+        worldPNG = GraphicsCollision.getInstance().loadImage("../map.png");
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public void draw(PApplet c, float a){
+    public void draw(PApplet c){
         c.lights();
         c.noStroke();
         c.fill(128);

@@ -14,16 +14,19 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 	private float radius;
 	
 	private int t;
-	
+	private World w;
 	
 	public ParticleGenerator(Point p, Curve c, int r) {
 		pos = p;
 		radius = r;
 		curve = c;
+        w = new World((float)200, (float)200, (float)0);
+        particles.add(w);
 	}
 
 	@Override
 	public void draw(PApplet c) {
+        w.draw(c);
 		
 		c.pushMatrix();
 		c.translate(pos.x,  pos.y, pos.z);
