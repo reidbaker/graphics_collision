@@ -13,6 +13,7 @@ public class GraphicsCollision extends PApplet {
 	public PGraphicsOpenGL pgl;
 	public GLU glu;
 	public GL gl;
+	private CollisionSimulation simulation;
 
 	private Point eye;
 	private Point focus;
@@ -56,7 +57,6 @@ public class GraphicsCollision extends PApplet {
 
 	boolean isSetup;
 	private ArrayList<Widget> widgets = new ArrayList<Widget>();
-	private CollisionSimulation simulation;
 	public void setup() {
 
 		instance = this;
@@ -136,8 +136,8 @@ public class GraphicsCollision extends PApplet {
 		textSize(13);
 		fill(255,200);
 		text(TITLE, 10, 5);
+		text("a-add, m-move, d-delete, w-write, r-read", 600, 5);
 	}
-
 	/*
 	 * Draws the background grid.
 	 */
@@ -175,11 +175,11 @@ public class GraphicsCollision extends PApplet {
 	public void keyPressed() {
 
 		switch(key) {
-
 		}
 
 		if (keyCode == DOWN || key == '[') {
 		}
+		simulation.keyPressed();
 	}
 
 	public void keyReleased() {
@@ -223,7 +223,7 @@ public class GraphicsCollision extends PApplet {
 		// check to see if we're over a widget,
 		// and if we are, update that widget
 
-		if (keyPressed && key == 'r') rotate();
+		if (keyPressed && key == 'p') rotate();
 		else if (keyPressed && key == 'z') zoom();
 		
 		else {

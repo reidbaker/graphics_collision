@@ -40,6 +40,7 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 		    	p.velocity = curve.getTangent(closest);
 		    	p.velocity.normalize();
 		    	p.velocity.mult(.2f*Point.dist(closest, p.pos));
+		    	
 		    	if (curve.isLastPoint(closest)) {
 		    		particles.remove(p);
 		    	}
