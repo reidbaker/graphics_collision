@@ -1,4 +1,3 @@
-import java.util.Vector;
 
 // ===== point class
 public class Point {
@@ -7,13 +6,9 @@ public class Point {
 	public Point(){
 		this(0,0,0);
 	}
-	public static Point subdivision(Point p0, Point p1, Point p2, Point p3
+	public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
 	        //s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
-	        return Point.lerp(
-	                Point.lerp(p0, 9/8, p1),
-	                (float) .5,
-	                Point.lerp(p3, 9/8, p2)
-	                );
+	        return Point.lerp(Point.lerp(p0, 9/8, p1),(float) .5, Point.lerp(p3, 9/8, p2));
     }
 
 	public Point (float px, float py, float pz) {
@@ -105,7 +100,7 @@ public class Point {
 		// copy of point P
 		return new Point(A.x,A.y,A.z);
 	}
-	public static Point P(Point A, float s, Point B) {
+	public static Point lerp(Point A, float s, Point B) {
 		// A+sAB
 		return new Point(A.x+s*(B.x-A.x),A.y+s*(B.y-A.y),A.z+s*(B.z-A.z));
 	}
@@ -151,7 +146,7 @@ public class Point {
 		// P+V
 		return new Point(P.x + V.x, P.y + V.y, P.z + V.z);
 	}
-	public static Point lerp(Point P, float s, Vector V) {
+	public static Point P(Point P, float s, Vector V) {
 		// P+sV
 		return new Point(P.x+s*V.x,P.y+s*V.y,P.z+s*V.z);
 	}

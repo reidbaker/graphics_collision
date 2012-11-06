@@ -28,7 +28,7 @@ class Vec {
         x-=V.x; y-=V.y; z-=V.z; return this;
     }
 
-    public static Vector sub(Point a, Point b) {
+    public static Vector sub(Pt a, Pt b) {
 	    return new Vector(a.x - b.x, a.y - b.y, a.z - b.z);
 	}
 
@@ -121,7 +121,7 @@ class Vec {
         // aA+bB+cC
         return A(V(a,A,b,B),V(c,C));
     }
-    public static Vec V(Point P, Point Q) {
+    public static Vec V(Pt P, Pt Q) {
         // PQ
         return new Vec(Q.x-P.x,Q.y-P.y,Q.z-P.z);
     }
@@ -142,7 +142,7 @@ class Vec {
         // UxV CROSS PRODUCT (normal to both)
         return new Vec( U.y*V.z-U.z*V.y, U.z*V.x-U.x*V.z, U.x*V.y-U.y*V.x);
     }
-    public static Vec N(Point A, Point B, Point C) {
+    public static Vec N(Pt A, Pt B, Pt C) {
         // normal to triangle (A,B,C), not normalized (proportional to area)
         return N(V(A,B),V(A,C));
     }

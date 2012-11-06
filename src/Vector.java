@@ -1,8 +1,8 @@
 // ===== vector class
-class Vector {
-    float x;
-    float y;
-    float z;
+public class Vector {
+    public float x;
+    public float y;
+    public float z;
 
     public Vector () {
         x = 0;
