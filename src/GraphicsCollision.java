@@ -111,8 +111,8 @@ public class GraphicsCollision extends PApplet {
 		textSize(13);
 		fill(255,200);
 		text(TITLE, 10, 5);
+		text("a-add, m-move, d-delete, w-write, r-read", 600, 5);
 	}
-
 	/*
 	 * Draws the background grid.
 	 */
