@@ -15,6 +15,7 @@ public class Particle implements Widget, MouseMotionListener {
 	curve = c;
     pos = p;
     radius = DEFAULT_RADIUS;
+    velocity = new Point();
   }
 
   Particle(Curve curve, float x, float y, float z) {
@@ -50,5 +51,8 @@ public class Particle implements Widget, MouseMotionListener {
     	c.stroke(sphere_color);
     	c.line(pos.x,pos.y,pos.z,closest.x,closest.y,closest.z);
     }
+    
+    // update
+    
   }
 }

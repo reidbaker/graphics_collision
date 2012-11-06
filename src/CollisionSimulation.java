@@ -34,7 +34,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			particles.add(new Particle(curve, r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
 		}
 		
-		generator = new ParticleGenerator(curve.points.get(0), 15);
+		generator = new ParticleGenerator(curve.points.get(0), curve, 15);
 	}
 
 	void resampleCurrentCurve() {
