@@ -64,7 +64,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 	void subdivideCurrentStroke() {
 		for (Curve s: strokes) {
-			if (s != null) s.subdivide2();
+			if (s != null) s.subdivide();
 		}
 	}
 

@@ -4,7 +4,7 @@ import processing.core.PApplet;
 
 class Curve {
 
-	final int MAX_PointS = 5000; // max number of Points in the stroke
+	final int MAX_POINTS = 5000; // max number of Points in the stroke
 	ArrayList<Nub> controls = new ArrayList<Nub>();
 	ArrayList<Point> points = new ArrayList<Point>();
 
@@ -45,7 +45,7 @@ class Curve {
 		if (points.size() < 1) return;
 
 		while (points.size () < size) {
-			subdivide2();
+			subdivide();
 		}
 
 		//    ArrayList<Point> newPoints = new ArrayList<Point>();
@@ -124,34 +124,9 @@ class Curve {
 		return Point.add(o, Point.mult(i, p.x), Point.mult(j, p.y));
 	}
 
-	void subdivide2() {
-		if (points.size()*2 >= MAX_PointS) {
-			System.out.println("Cannot subdivide; curve over max Points");
-			return;
-		} 
-		Point[] newPoints = new Point[points.size()];
-		int pos = 0;
-
-		int length = this.points.size();
-		if (points.size() > 2) {
-			Point[] Points = this.points.toArray(new Point[0]);
-			newPoints[pos++] = subdivide(Points[0], Points[1], Points[2]);
-
-			for (int i = 0; i < length - 3; i++) {
-				newPoints[pos++] = subdivide(Points[i], Points[i+1], Points[i+2], Points[i+3]);
-			}
-			newPoints[pos++] = subdivide(Points[length-1], Points[length-2], Points[length-3]);
-		}
-
-		ArrayList<Point> Points2 = new ArrayList<Point>();
-		int k = 0;
-		for (int i = 0; i < length; i++) {
-			Points2.add(points.get(i));
-			if (i < pos) Points2.add(newPoints[i]);
-		}
-
-		points = Points2;
-	} 
+	public void subdivide() {
+		points = Point.subdivide(points);
+	}
 
 	void showNextSubDiv(PApplet c) {
 
@@ -163,9 +138,9 @@ class Curve {
 		c.beginShape();
 		int length = points.size();
 		Point[] Points = this.points.toArray(new Point[0]);
-		if (length > 2) {
+		if (length > 3) {
 			Point p;
-			p = subdivide(Points[0], Points[1], Points[2]);
+			p = subdivide(Points[0], Points[1], Points[2], Points[3]);
 			c.vertex(p.x, p.y, p.z);
 			c.ellipse(p.x, p.y, 5, 5);
 			for (int i = 0; i < length - 3; i++) {
@@ -173,7 +148,7 @@ class Curve {
 				c.vertex(p.x, p.y, p.z);
 				c.ellipse(p.x, p.y, 5, 5);
 			}
-			p = subdivide(Points[length-1], Points[length-2], Points[length-3]);
+			p = subdivide(Points[length-1], Points[length-2], Points[length-3], Points[length - 4]);
 			c.vertex(p.x, p.y, p.z);
 			c.ellipse(p.x, p.y, 5, 5);
 		}
@@ -193,7 +168,7 @@ class Curve {
 	}
 
 	void addPoint(Point pt) {
-		if (points.size() < MAX_PointS) {
+		if (points.size() < MAX_POINTS) {
 			points.add(pt);
 		}
 	}
@@ -208,9 +183,9 @@ class Curve {
 		for (Nub n: controls) {
 			points.add(n.pos);
 		}
-		if (controls.size() > 3) {
-		    Point p = Point.subdivision(points.get(0), points.get(1), points.get(2), points.get(3));
-		    points.add(new Point(p.x, p.y, p.z));
+		
+		if (points.size() > 3) {
+			resample();
 		}
 	}
 

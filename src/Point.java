@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 
 
@@ -117,7 +119,35 @@ public class Point {
 		}
 	}
 
-	public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
+	public static ArrayList<Point> subdivide(ArrayList<Point> points) {
+
+		Point[] newPoints = new Point[points.size()];
+		int pos = 0;
+
+		int length = points.size();
+		if (points.size() > 3) {
+			newPoints[pos++] = fourPointSubdivide(points.get(0), points.get(1), points.get(2), points.get(3));
+
+			for (int i = 0; i < length - 3; i++) {
+				newPoints[pos++] = fourPointSubdivide(points.get(i), points.get(i+1), points.get(i+2), points.get(i+3));
+			}
+			
+			ArrayList<Point> points2 = new ArrayList<Point>();
+			points2.add(points.get(0));
+			for (int i = 1; i < length; i++) {
+				points2.add(points.get(i));
+				if (i < pos) points2.add(newPoints[i]);
+			}
+			
+			points = points2;
+		} else {
+			System.out.println("Not enough points to do four point subdivision");
+		}
+		
+		return points;
+	} 
+
+	public static Point fourPointSubdivide(Point p0, Point p1, Point p2, Point p3){
 		//s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
 		Point one = Point.lerp(p0, 9.0f/8.0f, p1);
 		Point two = Point.lerp(p3, 9.0f/8.0f, p2);
@@ -362,11 +392,11 @@ public class Point {
 	//		// tet is oriented so that A sees B, C, D clockwise
 	//		return volume(A,B,C,D)>=0;
 	//	}
-	
+
 	public String toString() {
 		return String.format("(%.2f,%.2f,%.2f)", x,y,z);
 	}
-	
+
 }
 
 /*
