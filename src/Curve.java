@@ -8,11 +8,9 @@ class Curve {
 	ArrayList<Point> points = new ArrayList<Point>();
 
 	int stroke_color;
-	int Point_color;
-	int Point_size = 3;
 
 	Curve(int colour) {
-		stroke_color = Point_color = colour;
+		stroke_color = colour;
 	}
 
 	Curve() {
@@ -22,11 +20,6 @@ class Curve {
 	Curve(int colour, ArrayList<Point> points) {
 		this(colour);
 		this.points = points;
-	}
-
-	void smooth() {
-		smooth(.5f);
-		smooth(-.5f);
 	}
 
 	int size() {
@@ -42,19 +35,6 @@ class Curve {
 
 		while (points.size () < size) {
 			subdivide();
-		}
-	}
-
-	private void smooth(float s) {
-		Point[] avg = new Point[points.size()];
-
-		for (int i = 1; i < points.size()-1; i++) {
-			Point mid = Point.midPoint(points.get(i-1), points.get(i+1));
-			avg[i] = (Point.addScaledVector(points.get(i), Point.sub(mid, points.get(i)), s));
-		}
-
-		for (int i = 1; i < points.size()-1; i++) {
-			points.set(i, avg[i]);
 		}
 	}
 
@@ -127,21 +107,26 @@ class Curve {
         }
 	    return positions;
 	}
-	public Vector getTangent(Point p){
+	
+	public Point getTangent(Point p){
 	    int index = findPoint(p);
-	    if(index ==0 || index == points.size()-1){
-	        return new Vector();
-	    }else{
+	    if(index == 0 || index == points.size()-1){
+	        return new Point();
+	    } else {
 	        float dx = points.get(index+1).x - points.get(index-1).x;
 	        float dy = points.get(index+1).y - points.get(index-1).y;
 	        float dz = points.get(index+1).z - points.get(index-1).z;
-	        return new Vector(dx, dy, dz);
+	        
+	        Point v = new Point(dx, dy, dz);
+	        System.out.println(v);
+	        return v;
 	    }
 	}
 
 	private int findPoint(Point p){
 	    for (int i = 0; i < points.size(); i++) {
             if(points.get(i).equals(p)){
+            	System.out.println(i);
                 return i;
             }
         }

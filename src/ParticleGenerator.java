@@ -6,12 +6,12 @@ import processing.core.PApplet;
 
 public class ParticleGenerator  implements Widget, MouseMotionListener  {
 	
+	private static final int MAX_PARTICLES = 100;
 	private ArrayList<Particle> particles = new ArrayList<Particle>();
 	private Curve curve;
 
 	private Point pos;
 	private float radius;
-	private int particlesPerSecond;
 	
 	private int t;
 	
@@ -34,7 +34,7 @@ public class ParticleGenerator  implements Widget, MouseMotionListener  {
 			p.draw(c);
 		}
 		
-		if (++t >= 300) {
+		if (++t >= 30 ) {
 			Random r = new Random();
 			particles.add(new Particle(curve, r.nextInt(50) + pos.x, r.nextInt(50) + pos.y,  r.nextInt(50) + pos.z));
 		}

@@ -17,7 +17,7 @@ public class GraphicsCollision extends PApplet {
 	private Point eye;
 	private Point focus;
 	private Point up;
-	private Vector I = new Vector(1,0,0), J = new Vector(0,1,0), K = new Vector(0,0,1); // picked surface point Q and screen aligned vectors {I,J,K} set when picked
+//	private Vector I = new Vector(1,0,0), J = new Vector(0,1,0), K = new Vector(0,0,1); // picked surface point Q and screen aligned vectors {I,J,K} set when picked
 
 	final String TITLE = "COLLISION SIMULATOR";
 
@@ -81,7 +81,7 @@ public class GraphicsCollision extends PApplet {
 	private void initializeViews() {
 		focus  = new Point(0,0,0); 
 		eye = new Point(0,0,1000); 
-		up = new Vector(0,1,1);
+//		up = new Vector(0,1,1);
 	}
 
 	public void draw() {
@@ -163,11 +163,11 @@ public class GraphicsCollision extends PApplet {
 			break;
 		}
 	}
-
-	void rotate() {
-		eye=Point.rotatePointAroundPlane(eye,  PI*(mouseX-pmouseX)/width,I,K,focus); 
-		eye=Point.rotatePointAroundPlane(eye, -PI*(mouseY-pmouseY)/width,J,K,focus);
-	}
+//
+//	void rotate() {
+//		eye=Point.rotatePointAroundPlane(eye,  PI*(mouseX-pmouseX)/width,I,K,focus); 
+//		eye=Point.rotatePointAroundPlane(eye, -PI*(mouseY-pmouseY)/width,J,K,focus);
+//	}
 
 	/**
 	 * What happens when we move the mouse.
@@ -186,7 +186,7 @@ public class GraphicsCollision extends PApplet {
 			}
 		}
 
-		if (!over) rotate();
+//		if (!over) rotate();
 	}
 
 	public void mouseDragged() {

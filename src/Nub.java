@@ -17,8 +17,8 @@ public class Nub implements Widget, MouseMotionListener {
 		circle_color = 0xFF3C6BDE;
 	}
 
-	Nub(int x, int y) {
-		this(new Point(x, y));
+	Nub(float x, float y, float z) {
+		this(new Point(x, y, z));
         circle_color = 0xFF3C6BDE;
 	}
 
@@ -30,11 +30,6 @@ public class Nub implements Widget, MouseMotionListener {
 	}
 
 	public void onClick() {
-	}
-
-	void onDrag() {
-//		pos.x += PApplet.mouseX - pmouseX;
-//		pos.y += mouseY - pmouseY;
 	}
 
 	public void mouseMoved(float x, float y) {
@@ -58,6 +53,7 @@ public class Nub implements Widget, MouseMotionListener {
 
 		c.popMatrix();
 	}
+	
 	public void setCircleColor(int val){
 	    circle_color = val;
 	}

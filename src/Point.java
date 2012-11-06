@@ -11,10 +11,6 @@ public class Point {
 		this(0,0,0);
 	}
 
-	public Point(float x, float y){
-		this(0,0,0);
-	}
-
 	Point(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
@@ -31,12 +27,20 @@ public class Point {
 		y += p.y;
 		z += p.z;
 	}
+	
+	public void mult(float s) {
+		x *= s;
+		y *= s;
+		z *= s;
+	}
 
 	void normalize() {
 		double magnitude = Math.sqrt(x*x+y*y+z*z);
 		x *= 1/magnitude;
 		y *= 1/magnitude;
 		z *= 1/magnitude;
+		
+		System.out.println(this);
 	}
 
 
@@ -85,7 +89,7 @@ public class Point {
 	}
 
 	public static Point rotateVector90(Point v) {
-		return new Point(-v.y, v.x);
+		return new Point(-v.y, v.x, 0);
 	}
 	
 	public static Vector rotatePointAroundPlane(Point p, float a, Vector I, Vector J, Point g) {
@@ -93,13 +97,13 @@ public class Point {
 			  y = dist(Point.sub(g,p),J);
 		
 		float c=(float) Math.cos(a), s=(float) Math.sin(a); 
-		return Vector.add(Vector.mult(I,x*c-x-y*s),Vector.mult(J,x*s+y*c-y));
+		return (Vector) Point.add(Point.mult(I,x*c-x-y*s),Point.mult(J,x*s+y*c-y));
 	};
 
 
 	public static Point rotateVector(Point v, float angle) {
 		float c=(float) Math.cos(angle), s=(float) Math.sin(angle);
-		return(new Point(v.x*c-v.y*s,v.x*s+v.y*c));
+		return(new Point(v.x*c-v.y*s,v.x*s+v.y*c, 0));
 	}
 	
 	// Rotated V by a parallel to plane (I,J)

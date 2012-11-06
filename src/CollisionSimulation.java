@@ -30,11 +30,11 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		curve = new Curve(0xFFFFFF00);
 		Random r = new Random();
 		for (int i = 0; i < 3; i++) {
-			curve.addControlPoint(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
+			curve.addControlPoint(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
 			particles.add(new Particle(curve, r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
 		}
 		
-		generator = new ParticleGenerator(curve.points.get(0), curve, 15);
+		generator = new ParticleGenerator(new Point(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 359), curve, 15);
 	}
 
 	void resampleCurrentCurve() {
@@ -63,7 +63,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			dragging = true;
 		}
 		
-		if (currentNub == null) GraphicsCollision.getInstance().rotate();
+//		if (currentNub == null) GraphicsCollision.getInstance().rotate();
 
 		if (!g.mousePressed) {
 			currentNub = null;
