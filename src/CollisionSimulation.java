@@ -21,6 +21,8 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	private Curve curve;
 	private boolean dragging = false;
 
+	private float a = 0;
+
 	CollisionSimulation(PApplet p, int ctrl_pnts) {
 
 		g = p;
@@ -131,6 +133,9 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 //		if (t >= 1) t = 0;
 //		keyframe++;
 //		if (keyframe >= strokes[3].size()) keyframe = 0;
+		World w = new World(c, 300, 300, 359);
+		w.draw(c, a);
+        a+= 0.01;
 	}
 
 	public int getClosestNub(ArrayList<Nub> nubs, Point p){
