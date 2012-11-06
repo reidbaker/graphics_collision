@@ -16,14 +16,28 @@ public class PointTest {
 
     @Test
     public void testSubdivision() {
-        Point p0 = new Point(0.0f, 0.0f, 0.0f);
-        Point p1 = new Point(1.0f, 0.0f, 0.0f);
-        Point p2 = new Point(2.0f, 0.0f, 0.0f);
-        Point p3 = new Point(3.0f, 0.0f, 0.0f);
-        Point out = Point.subdivision(p0, p1, p2, p3);
+        Point p0,p1,p2,p3,out;
+        //strait line test
+        p0 = new Point(0.0f, 0.0f, 0.0f);
+        p1 = new Point(1.0f, 0.0f, 0.0f);
+        p2 = new Point(2.0f, 0.0f, 0.0f);
+        p3 = new Point(3.0f, 0.0f, 0.0f);
+        out = Point.subdivision(p0, p1, p2, p3);
         assertEquals(out.x, 1.5f, EPS);
         assertEquals(out.y, 0.0f, EPS);
         assertEquals(out.z, 0.0f, EPS);
+        //trapazoid test 2d
+        p0 = new Point(0.0f, 0.0f, 0.0f);
+        p1 = new Point(1.0f, 1.0f, 0.0f);
+        p2 = new Point(2.0f, 1.0f, 0.0f);
+        p3 = new Point(3.0f, 0.0f, 0.0f);
+        out = Point.subdivision(p0, p1, p2, p3);
+        assertTrue(out.y > p1.y);
+        assertTrue(out.y > p2.y);
+        assertTrue(out.x > p1.x);
+        assertTrue(out.x < p2.x);
+        assertEquals(out.z, 0.0f, EPS);
+
     }
 
     @Test

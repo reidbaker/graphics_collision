@@ -6,11 +6,27 @@ public class Point {
 	public Point(){
 		this(0,0,0);
 	}
-	
-	
+    
 	public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
 	        //s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
-	        return Point.lerp(Point.lerp(p0, 9/8, p1),(float) .5, Point.lerp(p3, 9/8, p2));
+        Point one = Point.lerp(p0, 9.0f/8.0f, p1);
+        Point two = Point.lerp(p3, 9.0f/8.0f, p2);
+        return Point.lerp(one, (float).5, two);
+    }
+    public static Point subdivision(PointVector p0, PointVector p1, PointVector p2, PointVector p3){
+        float[] p0xyz = p0.getXYZ();
+        Point newP0 = new Point(p0xyz[0],p0xyz[1],p0xyz[2]);
+
+        float[] p1xyz = p1.getXYZ();
+        Point newP1 = new Point(p1xyz[0],p1xyz[1],p1xyz[2]);
+
+        float[] p2xyz = p2.getXYZ();
+        Point newP2 = new Point(p2xyz[0],p2xyz[1],p2xyz[2]);
+
+        float[] p3xyz = p3.getXYZ();
+        Point newP3 = new Point(p3xyz[0],p3xyz[1],p3xyz[2]);
+        return subdivision(newP0,newP1,newP2,newP3);
+
     }
 
 	public Point (float px, float py, float pz) {
@@ -100,7 +116,10 @@ public class Point {
 	}
 	public static Point lerp(Point A, float s, Point B) {
 		// A+sAB
-		return new Point(A.x+s*(B.x-A.x),A.y+s*(B.y-A.y),A.z+s*(B.z-A.z));
+	    float newX = A.x+s*(B.x-A.x);
+	    float newY = A.y+s*(B.y-A.y);
+	    float newZ = A.z+s*(B.z-A.z);
+		return new Point(newX,newY,newZ);
 	}
 	public static Point P(Point A, Point B) {
 		// (A+B)/2
