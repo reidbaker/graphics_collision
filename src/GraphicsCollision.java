@@ -107,17 +107,8 @@ public class GraphicsCollision extends PApplet {
 		}
 	}
 
-<<<<<<< Updated upstream
-	public void draw(){
-		//pgl.beginDraw();
-		//pgl.background(102);
-		//pgl.stroke(255);
-		//pgl.line(40, 40, mouseX, mouseY);
-=======
 	public void draw() {
->>>>>>> Stashed changes
 		line(40,40,mouseX,mouseY);
-
 		drawBackground();
 //
 //		for (Widget widget: widgets) {
@@ -195,5 +186,6 @@ public class GraphicsCollision extends PApplet {
         // vector representing recent mouse displacement
 	    return Vec.V((float)mouseX-pmouseX,(float)mouseY-pmouseY,0f);
 	}*/
+	
 
 }
