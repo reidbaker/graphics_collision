@@ -110,7 +110,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			//      if (s.size() == 0)  s.addPoint(new PointVector(x, y));
 			//      if (s.size() > 0 && dist(s.points[s.length-1], new PointVector(x, y)) > 20)
 				//        s.addPoint(new PointVector(x, y));
-		} 
+		}
 
 		if (!g.mousePressed) {
 			currentNub = null;
@@ -126,6 +126,9 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			strokes[currentStroke].addControlPoint(n);
 			control_points.add(n);
 			return;
+		}else if(g.key == 'd'){
+	        int closeLoc = getClosestNub(control_points, Geometry3D.get3DPoint(x, y));
+	        control_points.remove(closeLoc);
 		}
 	}
 
@@ -140,7 +143,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		c.text("CLICK AND DRAG TO CREATE STROKE", c.width/2, c.height/2 + 10);
 		if (currentStroke < 3) {
 			c.text("PRESS SPACE FOR NEXT STROKE", c.width/2, c.height/2 + 30);
-		} 
+		}
 		else {
 			c.text("PRESS ENTER TO START ANIMATION", c.width/2, c.height/2 + 30);
 		}
@@ -154,16 +157,34 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			p.draw(c);
 		}
 
+        int closeLoc = getClosestNub(control_points, Geometry3D.get3DPoint(c.mouseX, c.mouseY));
+        control_points.get(closeLoc).setCircleColor(c.color(250,0,0));
 		for (Nub n: control_points) {
-			if (n != null) n.draw(c);
+			if (n != null){
+			    n.draw(c);
+			}
 		}
-
+		//This is the default circle color
+		control_points.get(closeLoc).setCircleColor(0xFF3C6BDE);
 		t += .01;
 		if (t >= 1) t = 0;
 		keyframe++;
 		if (keyframe >= strokes[3].size()) keyframe = 0;
 	}
 
+	public int getClosestNub(ArrayList<Nub> nubs, Point p){
+	    float lastDist;
+	    float minDist = Integer.MAX_VALUE;
+	    int minIndex = -1;
+	    for(int i = 0; i < nubs.size(); i++) {
+	        lastDist = Point.dist(p, nubs.get(i).pos);
+	        if(lastDist < minDist){
+	            minDist = lastDist;
+	            minIndex = i;
+	        }
+        }
+	    return minIndex;
+	}
 	@Override
 	public boolean over(float x, float y) {
 		return true;
