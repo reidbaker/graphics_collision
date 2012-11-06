@@ -214,16 +214,16 @@ class Curve {
 		}
 	}
 
-	//  PointVector getClosestPointVector(PointVector p) {
-	//
-	//    PointVector closest = null;
-	//    float threshold = 0;
-	//    for (PointVector PointVector: PointVectors) {
-	//      float dist = dist(p, PointVector);
-	//      if ( dist < threshold) {
-	//        threshold = dist;
-	//        closest = PointVector;
-	//      }
-	//    }
-	//  }
+	PointVector getClosestPointVector(PointVector p) {
+		PointVector closest = null;
+		float threshold = 200;
+		for (PointVector PointVector: points) {
+			float dist = PointVector.dist(p, PointVector);
+			if ( dist < threshold) {
+				threshold = dist;
+				closest = PointVector;
+			}
+		}
+		return closest;
+	}
 }

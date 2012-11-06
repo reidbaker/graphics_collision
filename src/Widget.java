@@ -7,7 +7,6 @@ import processing.core.PApplet;
 interface Widget {
 	void draw(PApplet c);
 	boolean over(float x, float y);
-	void onClick();
 	void mouseMoved(float x, float y);
 	void mouseClicked(float x, float y);
 }

@@ -6,6 +6,8 @@ public class Point {
 	public Point(){
 		this(0,0,0);
 	}
+	
+	
 	public static Point subdivision(Point p0, Point p1, Point p2, Point p3){
 	        //s( s(A,9/8,B),.5, s(E,9/8,D)) from the notes
 	        return Point.lerp(Point.lerp(p0, 9/8, p1),(float) .5, Point.lerp(p3, 9/8, p2));
@@ -16,8 +18,6 @@ public class Point {
 		y = py;
 		z = pz;
 	}
-
-	
 
 	public Point add(Point P) {
 		x+=P.x;

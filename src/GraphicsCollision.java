@@ -16,7 +16,6 @@ public class GraphicsCollision extends PApplet {
 	
 	final String TITLE = "COLLISION SIMULATOR";
 
-
 	//Colors
 	public final int RED = color(250,0,0);
 	public final int DRED = color(150,0,0);
@@ -99,15 +98,12 @@ public class GraphicsCollision extends PApplet {
 				}
 			});
 
-
-
 			widgets.add(smoothen);
 			widgets.add(subdivide);
 			widgets.add(resetCurve);
 
 			// set the framerate to be convenient
 			frameRate(32);
-
 		}
 	}
 
@@ -157,8 +153,7 @@ public class GraphicsCollision extends PApplet {
 			y+= gap;
 		}
 	}
-
-
+	
 	public void mouseReleased(){
 
 	}
@@ -171,14 +166,6 @@ public class GraphicsCollision extends PApplet {
 		// Set colors and draw lines. Use a thicker stroke is possible
 	}
 
-	// ===== Mouse Tools from jarak's PV file
-	public Point Mouse(){
-		// current mouse location
-		return Point.P(mouseX,mouseY,0);
-	}
-	public Point Pmouse(){
-		return Point.P(pmouseX,pmouseY,0);
-	}
 	/*public Vec MouseDrag(){
         // vector representing recent mouse displacement
 	    return Vec.V((float)mouseX-pmouseX,(float)mouseY-pmouseY,0f);
@@ -264,12 +251,10 @@ public class GraphicsCollision extends PApplet {
 	 * What happens when we click the mouse.
 	 */
 	public void mousePressed() {
-	  
 	    // are we clicking on a widget?
 	    for (int i = 0; i < widgets.size(); i++) {
 	      Widget widget = (Widget)widgets.get(i);
 	      if (widget.over(mouseX,mouseY)) {
-	        widget.onClick();
 	        widget.mouseClicked(mouseX,mouseY);
 	      }
 	    }
