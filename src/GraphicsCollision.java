@@ -77,4 +77,17 @@ public class GraphicsCollision extends PApplet {
 		// Set colors and draw lines. Use a thicker stroke is possible
 	}
 
+	// ===== Mouse Tools from jarak's PV file
+	public Pt Mouse(){
+        // current mouse location
+	    return Pt.P(mouseX,mouseY,0);
+	}
+	public Pt Pmouse(){
+	    return Pt.P(pmouseX,pmouseY,0);
+	}
+	/*public Vec MouseDrag(){
+        // vector representing recent mouse displacement
+	    return Vec.V((float)mouseX-pmouseX,(float)mouseY-pmouseY,0f);
+	}*/
+
 }

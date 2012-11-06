@@ -215,15 +215,15 @@ public class Pt {
     }
     public static float volume(Pt A, Pt B, Pt C, Pt D) {
         // volume of tet
-        return m(V(A,B),V(A,C),V(A,D))/6;
+        return m(Vec.V(A,B),Vec.V(A,C),Vec.V(A,D))/6;
     }
     public static boolean parallel (Vec U, Vec V) {
         // true if U and V are almost parallel
-        return n(N(U,V))<n(U)*n(V)*0.00001;
+        return n(Vec.N(U,V))<n(U)*n(V)*0.00001;
     }
     public static float angle(Vec U, Vec V) {
         // angle(U,V)
-        return acos(d(U,V)/n(V)/n(U));
+        return (float) Math.acos(d(U,V)/n(V)/n(U));
     }
     public static boolean cw(Vec U, Vec V, Vec W) {
         // (UxV)*W>0  U,V,W are clockwise
@@ -236,11 +236,6 @@ public class Pt {
 }
 
 /*
-// ===== mouse tools
-pt Mouse() {return P(mouseX,mouseY,0);};                                          // current mouse location
-pt Pmouse() {return P(pmouseX,pmouseY,0);};
-vec MouseDrag() {return V(mouseX-pmouseX,mouseY-pmouseY,0);};                     // vector representing recent mouse displacement
-
 // ===== rotate
 
 // ===== render
