@@ -16,25 +16,23 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	private int height;
 
 	private float t;
-	private int keyframe;
 
 	private Curve curve;
 	private boolean dragging = false;
 
-	CollisionSimulation(PApplet p, int ctrl_pnts, int keyframes) {
+	CollisionSimulation(PApplet p, int ctrl_pnts) {
 
 		g = p;
 		width = g.width;
 		height = g.height;
-
 		curve = new Curve(0xFFFFFF00);
 		Random r = new Random();
-		for (int i = 0; i < 3; i++) {
-			curve.addControlPoint(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
+		for (int i = 0; i < ctrl_pnts; i++) {
+		    Nub next = new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 15);
+		    curve.addControlPoint(next);
 			particles.add(new Particle(curve, r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
 		}
-		
-		generator = new ParticleGenerator(new Point(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 359), curve, 15);
+		generator = new ParticleGenerator(curve.points.get(0), curve, 15);
 	}
 
 	void resampleCurrentCurve() {

@@ -73,7 +73,7 @@ public class GraphicsCollision extends PApplet {
 			//			interfaceFont = loadFont("Roboto-Bold-13.vlw");
 			//			textFont(interfaceFont, 13);
 
-			widgets.add(new CollisionSimulation(this, 7, 7));
+			widgets.add(new CollisionSimulation(this, 7));
 			isSetup = true;
 		}
 	}
