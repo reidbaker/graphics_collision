@@ -173,6 +173,7 @@ public class Point {
 		return P(B,Vector.V(A,C));
 	}
 	/*public static void v(Pt P) { //TODO figure out what this does
+
         // rendering
         vertex(P.x,P.y,P.z);
     }*/
