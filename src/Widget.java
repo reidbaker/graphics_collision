@@ -73,7 +73,6 @@ class Button implements Widget {
 		// draw the button text
 		if (string != null) {
 			float startX = x + 10;
-			float startY = y;
 			if (align == PApplet.CENTER) {
 				startX = x + width/2;
 			}

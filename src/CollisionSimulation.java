@@ -25,13 +25,11 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	};
 
 	Curve[] strokes = new Curve[4];
+	Curve curve;
 	Stroke one, two, three, four;
 	int currentStroke;
 	int keyframe;
 	boolean dragging = false;
-
-
-
 
 	CollisionSimulation(PApplet p, int ctrl_pnts, int keyframes) {
 
@@ -39,17 +37,21 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		width = g.width;
 		height = g.height;
 
-		Random r = new Random();
-		for (int i = 0; i < 3; i++) {
-			control_points.add(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
-			particles.add(new Particle(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
-		}
-
 		for (int i = 0; i < strokes.length; i++) {
 			strokes[i] = new Curve(stroke_colors[i]);
 		}
-
+		
+		curve = strokes[0];
+		
 		currentStroke = 0;
+		
+		Random r = new Random();
+		for (int i = 0; i < 3; i++) {
+			control_points.add(new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4));
+			particles.add(new Particle(curve, r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
+		}
+
+
 	}
 
 	void setCurrentStroke(int i) {
@@ -149,7 +151,6 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 		for (Curve s: strokes) {
 			s.draw(c);
-			// s.drawTranslation(constraints[0].pos, constraints[1].pos);
 		}
 
 		for (Particle p: particles) {
@@ -163,6 +164,7 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 			    n.draw(c);
 			}
 		}
+		
 		//This is the default circle color
 		control_points.get(closeLoc).setCircleColor(0xFF3C6BDE);
 		t += .01;

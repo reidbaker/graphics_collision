@@ -109,8 +109,8 @@ public class GraphicsCollision extends PApplet {
 
 	public void draw() {
 		line(40,40,mouseX,mouseY);
-		drawBackground();
-
+		//drawBackground();
+		background(0xFFFFFFFF);
 		for (Widget widget: widgets) {
 			widget.draw(this);
 		}
@@ -196,9 +196,6 @@ public class GraphicsCollision extends PApplet {
 	    break;
 	  case 's': case 'S':
 	    simulation.smoothCurrentStroke();
-	    break;
-	  case 'd': case 'D':
-	    simulation.subdivideCurrentStroke();
 	    break;
 	   case 'r': case 'R':
 	    simulation.resetCurrentStroke();

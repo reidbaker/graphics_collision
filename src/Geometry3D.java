@@ -85,7 +85,6 @@ public class Geometry3D {
 		double x = mouseX;
 		double y = applet.height - mouseY;
 
-
 		// we're using a floatbuffer for performance reasons. if we were using C, it wouldn't be necessary.
 		// more info on why here: http://stackoverflow.com/questions/10697161/why-floatbuffer-instead-of-float
 		// float[] fb;
