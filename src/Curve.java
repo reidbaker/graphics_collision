@@ -99,7 +99,23 @@ class Curve {
 		}
 		return closest;
 	}
-
+	
+	public Nub getClosetControlPoint(Point p) {
+		return getClosestControlPoint(p, Integer.MAX_VALUE);
+	}
+	
+	public Nub getClosestControlPoint(Point p, float threshold) {
+		Nub closest = null;
+		for (Nub point: controls) {
+			float dist = Point.dist(p, point.pos);
+			if ( dist < threshold) {
+				threshold = dist;
+				closest = point;
+			}
+		}
+		return closest;
+	}
+	
 	public ArrayList<Point> getNubPositions(){
 	    ArrayList<Point> positions = new ArrayList<Point>();
 	    for (int i = 0; i < controls.size(); i++) {
@@ -117,20 +133,21 @@ class Curve {
 	        float dy = points.get(index+1).y - points.get(index-1).y;
 	        float dz = points.get(index+1).z - points.get(index-1).z;
 	        
-	        Point v = new Point(dx, dy, dz);
-	        System.out.println(v);
-	        return v;
+	        return new Point(dx, dy, dz);
 	    }
 	}
 
 	private int findPoint(Point p){
 	    for (int i = 0; i < points.size(); i++) {
             if(points.get(i).equals(p)){
-            	System.out.println(i);
                 return i;
             }
         }
 	    System.out.println("Point didnt match any points");
 	    return -1;
+	}
+	
+	boolean isLastPoint(Point p) {
+		return points.get(points.size()-1).equals(p);
 	}
 }

@@ -23,9 +23,6 @@ public class Nub implements Widget, MouseMotionListener {
 	}
 
 	public boolean over(float x, float y) {
-		float dx = x - pos.x;
-		float dy = y - pos.y;
-		boolean result = ((dx*dx) + (dy*dy)) <= (radius*radius);
 		return true;
 	}
 
@@ -33,8 +30,10 @@ public class Nub implements Widget, MouseMotionListener {
 	}
 
 	public void mouseMoved(float x, float y) {
-		pos.x = x;    
-		pos.y = y;
+		Point p = Geometry3D.get3DPoint(x, y);
+		pos.x = p.x;    
+		pos.y = p.y;
+		pos.z = p.z;
 	}
 
 	public void mouseClicked(float x, float y) {

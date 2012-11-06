@@ -8,7 +8,6 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 	private PApplet g;
 
-	private ArrayList<Particle> particles = new ArrayList<Particle>();
 	private ParticleGenerator generator;
 	private Nub currentNub;
 
@@ -28,11 +27,10 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		curve = new Curve(0xFFFFFF00);
 		Random r = new Random();
 		for (int i = 0; i < ctrl_pnts; i++) {
-		    Nub next = new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 15);
+		    Nub next = new Nub(r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, r.nextInt(300));
 		    curve.addControlPoint(next);
-			particles.add(new Particle(curve, r.nextInt(width/2) + width/4, r.nextInt(height/2) + height/4, 0));
 		}
-		generator = new ParticleGenerator(curve.points.get(0), curve, 15);
+		generator = new ParticleGenerator(curve.points.get(0), curve, 2);
 	}
 
 	void resampleCurrentCurve() {
@@ -43,19 +41,19 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 
 	public void mouseMoved(float x, float y) {
 		if (g.mousePressed) {
-			for (Nub k: curve.controls) {
-				if (k != null && k.over(x, y)) {
-					if (currentNub == null) {
-						currentNub = k;
-					}
-				}
-			}
 
-			if (currentNub != null) {
+			currentNub = curve.getClosestControlPoint(Geometry3D.get3DPoint(x, y), 50);
+
+			if (currentNub != null && g.key == 'm') {
 				if (x > 20 && x < width-20 && y > 20 && y < height - 20) {
 					currentNub.mouseMoved(x, y);
+					resampleCurrentCurve();
 				}
 				return;
+			}
+			
+			if (currentNub == null) {
+				GraphicsCollision.getInstance().rotate();
 			}
 
 			dragging = true;
@@ -70,20 +68,15 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 	}
 
 	public void mouseClicked(float x, float y) {
-		System.out.println(Geometry3D.get3DPoint(x, y));
 		if (g.key == 'g') {
-			Nub n = new Nub(Geometry3D.get3DPoint(x, y));
+			Nub n = new Nub(Geometry3D.get3DPoint(x,y));
 			curve.addControlPoint(n);
 			return;
-		}else if(g.key == 'd'){
-            int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x, y));
+		} else if(g.key == 'd'){
+            int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x,y));
 	        curve.controls.remove(closeLoc); //remove closest point
             resampleCurrentCurve();
-		}else if(g.key == 'm'){
-            int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(x, y));
-            curve.controls.get(closeLoc).pos = Geometry3D.get3DPoint(x, y);
-            resampleCurrentCurve();
-		}
+		} 
 	}
 
 	public void draw(PApplet c) {
@@ -92,10 +85,6 @@ public class CollisionSimulation implements Widget, MouseMotionListener {
 		c.lights();
 
 		curve.draw(c);
-		for (Particle p: particles) {
-			p.draw(c);
-		}
-		
 		generator.draw(c);
 
         int closeLoc = getClosestNub(curve.controls, Geometry3D.get3DPoint(c.mouseX, c.mouseY));

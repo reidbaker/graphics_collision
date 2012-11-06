@@ -17,7 +17,10 @@ public class GraphicsCollision extends PApplet {
 	private Point eye;
 	private Point focus;
 	private Point up;
-//	private Vector I = new Vector(1,0,0), J = new Vector(0,1,0), K = new Vector(0,0,1); // picked surface point Q and screen aligned vectors {I,J,K} set when picked
+	private Point Q, I, J, K;
+
+	float rx, ry, rz;
+	//	private Vector I = new Vector(1,0,0), J = new Vector(0,1,0), K = new Vector(0,0,1); // picked surface point Q and screen aligned vectors {I,J,K} set when picked
 
 	final String TITLE = "COLLISION SIMULATOR";
 
@@ -53,6 +56,7 @@ public class GraphicsCollision extends PApplet {
 
 	boolean isSetup;
 	private ArrayList<Widget> widgets = new ArrayList<Widget>();
+	private CollisionSimulation simulation;
 	public void setup() {
 
 		instance = this;
@@ -66,37 +70,60 @@ public class GraphicsCollision extends PApplet {
 			pgl = (PGraphicsOpenGL) g;
 			gl = pgl.beginGL();
 			pgl.endGL();
-			
+
 			initializeViews();
 
 			// load the fonts for our interface
 			//			interfaceFont = loadFont("Roboto-Bold-13.vlw");
 			//			textFont(interfaceFont, 13);
-
-			widgets.add(new CollisionSimulation(this, 7));
+			simulation = new CollisionSimulation(this, 7);
+			widgets.add(simulation);
 			isSetup = true;
 		}
 	}
-	
+
 	private void initializeViews() {
 		focus  = new Point(0,0,0); 
-		eye = new Point(0,0,1000); 
-//		up = new Vector(0,1,1);
+		eye = new Point(0,0,500); 
+		up = new Point(0,1,0);
+		Q = new Point();
+		I = new Point();
+		J = new Point();
+		K = new Point();
 	}
 
+	float i;
 	public void draw() {
 		camera(); // reset to 2d;
 		//drawBackground();
 		background(0xFFFFFFFF);
 
-	//	camera(eye.x, eye.y, eye.z, focus.x, focus.y, focus.z, up.x, up.y, up.z);
-
+		Geometry3D.setFrame(Q, I, J, K);
+		pushMatrix();
+//		camera(eye.x, eye.y, eye.z, focus.x, focus.y, focus.z, up.x, up.y, up.z); // defines the view : eye, ctr, up
+		changeViewAndFrame();
+		translate(-width/2, -height/2);
+		
 		for (Widget widget: widgets) {
 			widget.draw(this);
 		}
+		
+		popMatrix();
 
 		drawTopBar();
 
+	}
+
+	float d=300, b=0, a=0; // view parameters: distance, angles, q
+
+	void  changeViewAndFrame() {
+		float ca=cos(a), sa=sin(a), cb=cos(b), sb=sin(b); // viewing direction angles
+		if (keyPressed&&key=='d') d-=mouseY-pmouseY;  // changes distance form the target to the viewpoint
+		eye.x = d*cb*ca;
+		eye.y = d*sa;
+		eye.z =  d*sb*ca;
+		camera(eye.x, eye.y, eye.z, focus.x, focus.y, focus.z, up.x, up.y, up.z); // defines the view : eye, ctr, up
+		directionalLight(250, 250, 250, -eye.x, -eye.y+100, -eye.z); // puts a white light above and to the left of the viewer 
 	}
 
 	/**
@@ -163,11 +190,14 @@ public class GraphicsCollision extends PApplet {
 			break;
 		}
 	}
-//
-//	void rotate() {
-//		eye=Point.rotatePointAroundPlane(eye,  PI*(mouseX-pmouseX)/width,I,K,focus); 
-//		eye=Point.rotatePointAroundPlane(eye, -PI*(mouseY-pmouseY)/width,J,K,focus);
-//	}
+
+	void rotate() {
+		eye=Point.rotatePointAroundPlane(eye, PI*(mouseX-pmouseX)/width,I,K,focus); 
+		eye=Point.rotatePointAroundPlane(eye,-PI*(mouseY-pmouseY)/width,J,K,focus);
+		rx += (mouseX - pmouseX)*.1f;
+		ry += (mouseY - pmouseY)*.1f;
+		// rz += y;
+	}
 
 	/**
 	 * What happens when we move the mouse.
@@ -186,16 +216,18 @@ public class GraphicsCollision extends PApplet {
 			}
 		}
 
-//		if (!over) rotate();
+		//		if (!over) rotate();
 	}
 
 	public void mouseDragged() {
 		// check to see if we're over a widget,
 		// and if we are, update that widget
+		
+		if (keyPressed && key=='d') a-=PI*(mouseY-pmouseY)/height; a=(float) Math.max(-PI/2+0.1,a); a=(float) Math.min(PI/2-0.1,a);  b+=PI*(mouseX-pmouseX)/width; 
+//		rotate();
 		for (int i = 0; i < widgets.size(); i++) {
 			Widget widget = (Widget)widgets.get(i);
 			if (widget.over(mouseX, mouseY)) {
-				// widget.onHover();
 				widget.mouseMoved(mouseX, mouseY);
 			}
 		}

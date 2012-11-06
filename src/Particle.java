@@ -5,9 +5,9 @@ public class Particle implements Widget, MouseMotionListener {
   final static int DEFAULT_RADIUS = 5;
 
   private Curve curve;
-  private Point pos;
+  Point pos;
   private int radius;
-  private Point velocity;
+  Point velocity;
 
   int sphere_color = 0xff555555;
 
@@ -36,6 +36,27 @@ public class Particle implements Widget, MouseMotionListener {
   public void mouseClicked(float x, float y) {
     
   }
+  
+//  public float collision(BALL A, BALL B) {   // computes collision time t and returns it if 0<t<1. Otherwise, returns 2
+//	  vec W=M(-1,A.V,1,B.V); vec D=V(A.C,B.C); float a=dot(W,W); float b=2*dot(D,W); float c=dot(D,D)-sq(A.r+B.r); // coeffs of quadratic equation
+//	  float d=sq(b)-4*a*c; // discriminant of quadratic equation
+//	  if (d>=0) {float t1=(-b-sqrt(d))/2/a; if(t1<0) t1=2; float t2=(-b+sqrt(d))/2/a; if(t2<0) t2=2; float m=min(t1,t2); 
+//	              if ((-0.02<=m)&&(m<=1.02)) return m; } //* 
+//	  return 2; }
+  
+  public boolean collides(Particle p) {
+	  return false;
+  }
+  
+  public static void exchangeVelocities(Particle p, Particle q) {
+	  Point v = p.velocity;
+	  Point u = q.velocity;
+	  Point n = Point.sub(v, u);
+	  n.normalize();
+	  
+	  u.sub(Point.mult(new Point(1,1,1), Point.dot(u, n) + Point.dot(v, n)));
+	  v.sub(Point.mult(new Point(1,1,1), Point.dot(u, n) + Point.dot(v, n)));
+  }
 
   public void draw(PApplet c) {
     c.pushMatrix();
@@ -49,9 +70,6 @@ public class Particle implements Widget, MouseMotionListener {
     Point closest = curve.getClosestPoint(pos);
     
     if (closest != null) {
-    	velocity = curve.getTangent(closest);
-    	velocity.normalize();
-    	velocity.mult(.2f*Point.dist(closest, pos));
     	c.stroke(sphere_color);
     	c.line(pos.x,pos.y,pos.z,closest.x,closest.y,closest.z);
     }

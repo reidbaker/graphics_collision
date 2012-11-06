@@ -3,13 +3,14 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
 
 import processing.opengl.PGraphicsOpenGL;
 
 public class Geometry3D {
-	
+
 	public static Point[] getScreenRay(float mouseX, float mouseY) {
-		
+
 		GraphicsCollision applet = GraphicsCollision.getInstance();
 		((PGraphicsOpenGL)applet.g).beginGL(); // let's start doing some gl stuff
 		int viewport[] = new int[4];
@@ -95,10 +96,25 @@ public class Geometry3D {
 		applet.gl.glReadPixels((int)x, (int)y, 1, 1, GL.GL_DEPTH_COMPONENT, GL.GL_FLOAT, fb);
 		fb.rewind(); // reset the buffer position
 
-		applet.glu.gluUnProject (x, y, .8, model, 0, projection, 0, viewport, 0, mousePos, 0);
+		applet.glu.gluUnProject (x, y, fb.get(0), model, 0, projection, 0, viewport, 0, mousePos, 0);
 
 		((PGraphicsOpenGL)applet.g).endGL(); // we're done!
 
 		return new Point ( (float) mousePos[0], (float) mousePos[1], (float) mousePos[2]);
+	}
+
+	public static void setFrame(Point Q, Point I, Point J, Point K) { 
+		GraphicsCollision applet = GraphicsCollision.getInstance();
+		((PGraphicsOpenGL)applet.g).beginGL();
+		
+		float modelviewm[] = new float[16]; 
+		applet.gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, modelviewm, 0); 
+		((PGraphicsOpenGL)applet.g).endGL();
+		
+//		Q.set(Pick()); 
+		I.set(modelviewm[0],modelviewm[4],modelviewm[8]);  
+		J.set(modelviewm[1],modelviewm[5],modelviewm[9]); 
+		K.set(modelviewm[2],modelviewm[6],modelviewm[10]);   // println(I.x+","+I.y+","+I.z);
+		
 	}
 }
