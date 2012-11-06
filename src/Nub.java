@@ -5,19 +5,21 @@ public class Nub implements Widget, MouseMotionListener {
 
 	final static int DEFAULT_RADIUS = 10;
 
-	Point pos;
+	public Point pos;
 	int radius;
 
-	int circle_color = 0xFF3C6BDE;
+	int circle_color;
 	int text_color = 0x38ffffff;
 
 	Nub(Point p) {
 		pos = p;
 		radius = DEFAULT_RADIUS;
+		circle_color = 0xFF3C6BDE;
 	}
 
 	Nub(int x, int y) {
 		this(new Point(x, y));
+        circle_color = 0xFF3C6BDE;
 	}
 
 	public boolean over(float x, float y) {
@@ -56,5 +58,8 @@ public class Nub implements Widget, MouseMotionListener {
 
 
 		c.popMatrix();
+	}
+	public void setCircleColor(int val){
+	    circle_color = val;
 	}
 }
